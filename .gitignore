@@ -1,0 +1,8 @@
+# IDE
+.idea
+/venv/
+
+#build
+/build/
+/dist/
+*.egg-info/

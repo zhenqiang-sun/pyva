@@ -49,6 +49,8 @@ class DingtalkOauth2Client:
         if resp.status_code == 200:
             return resp.json()
         else:
+            logger.error(url)
+            logger.error(body)
             logger.error(resp.text)
             return resp.json()
 

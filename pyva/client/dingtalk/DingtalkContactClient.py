@@ -32,6 +32,8 @@ class DingtalkContactClient:
         if data.get("errcode", -1) == 0:
             return data.get("result", [])
         else:
+            logger.error(url)
+            logger.error(body)
             logger.error(data)
             return None
 
@@ -58,6 +60,8 @@ class DingtalkContactClient:
         if data.get("errcode", -1) == 0:
             return data.get("result", {}).get("list", [])
         else:
+            logger.error(url)
+            logger.error(body)
             logger.error(data)
             return None
 
@@ -80,5 +84,7 @@ class DingtalkContactClient:
         if data.get("errcode", -1) == 0:
             return data.get("result", {})
         else:
+            logger.error(url)
+            logger.error(body)
             logger.error(data)
             return None

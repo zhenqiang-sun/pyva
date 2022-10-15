@@ -14,7 +14,7 @@ class NacosConfig:
     # 端口
     port: int = 8848
     # 安全证书
-    ssl: bool = False
+    ssl: bool = True
     # 命名空间
     namespace: str = "public"
     # 配置组
@@ -27,6 +27,8 @@ class NacosConfig:
     servicePort: int
     # 注册服务IP
     serviceIp = IpUtil.getHostIp()
+    # 注册服开启状态
+    serviceEnabled: bool = True
     # 配置ID
     dataId: str
     # 心跳频率，单位秒

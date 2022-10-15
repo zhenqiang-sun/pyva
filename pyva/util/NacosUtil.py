@@ -1,13 +1,17 @@
 import _thread
 import json
+import logging
+import os
 import random
 import time
 
 import nacos
+import requests
 import yaml
-from requests import request
 
 from pyva.config.NacosConfig import NacosConfig
+
+logger = logging.getLogger('nacos')
 
 
 class NacosUtil:
@@ -24,6 +28,10 @@ class NacosUtil:
     config = None
 
     def __init__(self, nacosConfig: NacosConfig):
+        """
+        初始化
+        """
+
         self.nacosConfig = nacosConfig
 
         if nacosConfig.ssl:
@@ -35,6 +43,37 @@ class NacosUtil:
             protocol,
             nacosConfig.host,
             nacosConfig.port)
+
+        # 获取client
+        self.getClient(self.url, nacosConfig.namespace)
+
+        # 获取配置
+        self.getConfig()
+
+        # 判断配置赋值
+        if self.config and self.config.get("nacos"):
+            # 判断更新配置：注册服开启状态
+            if self.config.get("nacos").get("serviceEnabled") is not None:
+                nacosConfig.serviceEnabled = self.config.get("nacos").get("serviceEnabled")
+
+            # 判断更新配置：注册服务IP
+            if self.config.get("nacos").get("serviceIp"):
+                nacosConfig.serviceIp = self.config.get("nacos").get("serviceIp")
+            elif os.getenv("SERVICE_IP"):
+                nacosConfig.serviceIp = os.getenv("SERVICE_IP")
+
+        if not nacosConfig.serviceEnabled:
+            return
+
+        # 注册实例
+        self.client.add_naming_instance(
+            self.nacosConfig.serviceName,
+            self.nacosConfig.serviceIp,
+            self.nacosConfig.servicePort,
+            None, 1, None, True, True, True)
+
+        # 发送心跳
+        _thread.start_new_thread(self.sendHeartbeat, ())
 
     def __del__(self):
         """
@@ -87,24 +126,6 @@ class NacosUtil:
 
         return self.config
 
-    def init(self):
-        """
-        初始化
-        :return:
-        """
-        # 获取client
-        self.getClient(self.url, self.nacosConfig.namespace)
-
-        # 注册实例
-        self.client.add_naming_instance(
-            self.nacosConfig.serviceName,
-            self.nacosConfig.serviceIp,
-            self.nacosConfig.servicePort,
-            None, 1, None, True, True, True)
-
-        # 发送心跳
-        _thread.start_new_thread(self.sendHeartbeat, ())
-
     @staticmethod
     def resetConfig(obj: object, config: dict):
         for key, value in config.items():
@@ -137,40 +158,39 @@ class NacosUtil:
 
         return url
 
-    def post(self, serviceName: str, path, json=None, data=None, files=None):
+    def request(self, method: str, serviceName: str, path: str, **kwargs):
         """
         请求屏幕系统服务POST方法
+        :param method 请求方式
         :param serviceName 服务名
         :param path 请求地址
-        :param json 请求json数据
-        :param data: 请求form数据
-        :param files: 请求文件数据
-        :return dict 返回数据
         """
 
         url = self.getInstanceUrl(serviceName) + path
 
-        resp = request('post', url, json=json, data=data, files=files)
+        resp = requests.request(method=method, url=url, **kwargs)
 
-        if resp.status_code == 200 and resp.text:
+        if resp.status_code == 200:
             return resp.json()
         else:
-            return None
+            logger.error(resp.text)
 
-    def get(self, serviceName: str, path, data=None):
-        """
-        请求屏幕系统服务POST方法
-        :param serviceName 服务名
-        :param path 请求地址
-        :param data: 请求query数据
-        :return dict 返回数据
-        """
+            try:
+                return resp.json()
+            except:
+                return None
 
-        url = self.getInstanceUrl(serviceName) + path
+    def get(self, serviceName: str, path: str, **kwargs):
+        return self.request("get", serviceName, path, **kwargs)
 
-        resp = request('get', url, data=data)
+    def post(self, serviceName: str, path: str, **kwargs):
+        return self.request("post", serviceName, path, **kwargs)
 
-        if resp.status_code == 200 and resp.text:
-            return resp.json()
-        else:
-            return None
+    def put(self, serviceName: str, path: str, **kwargs):
+        return self.request("put", serviceName, path, **kwargs)
+
+    def patch(self, serviceName: str, path: str, **kwargs):
+        return self.request("patch", serviceName, path, **kwargs)
+
+    def delete(self, serviceName: str, path: str, **kwargs):
+        return self.request("delete", serviceName, path, **kwargs)

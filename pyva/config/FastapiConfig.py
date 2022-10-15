@@ -13,3 +13,9 @@ class FastapiConfig(object):
     openapi_prefix: str = None
     docs_url: str = "/docs"
     redoc_url: str = "/redoc"
+    
+    # CORS配置
+    corsOrigins: list = [
+        "http://localhost",
+        "http://localhost:3000",
+    ]

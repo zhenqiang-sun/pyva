@@ -9,7 +9,7 @@ class LoggingLevel:
     DEBUG: str = "DEBUG"
 
 
-def generateConfig(loggingLevel):
+def generateConfig(loggingPath: str, loggingLevel: str):
     loggingConfig: dict = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -31,7 +31,7 @@ def generateConfig(loggingLevel):
             "file_error": {
                 "level": "ERROR",
                 "class": "logging.handlers.TimedRotatingFileHandler",
-                "filename": "../logs/pyva_error.log",
+                "filename": loggingPath + "pyva_error.log",
                 "when": "MIDNIGHT",
                 "backupCount": 100,
                 "formatter": "standard",
@@ -41,7 +41,7 @@ def generateConfig(loggingLevel):
             "file_info": {
                 "level": "INFO",
                 "class": "logging.handlers.TimedRotatingFileHandler",
-                "filename": "../logs/pyva_info.log",
+                "filename": loggingPath + "pyva_info.log",
                 "when": "MIDNIGHT",
                 "backupCount": 10,
                 "formatter": "standard",
@@ -51,7 +51,7 @@ def generateConfig(loggingLevel):
             "file_debug": {
                 "level": "DEBUG",
                 "class": "logging.handlers.TimedRotatingFileHandler",
-                "filename": "../logs/pyva_debug.log",
+                "filename": loggingPath + "pyva_debug.log",
                 "when": "MIDNIGHT",
                 "backupCount": 3,
                 "formatter": "standard",
@@ -110,4 +110,4 @@ def generateConfig(loggingLevel):
     return loggingConfig
 
 
-LoggingConfig = generateConfig(LoggingLevel.DEBUG)
+LoggingConfig = generateConfig("../logs/", LoggingLevel.DEBUG)

@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
 
+from pyva.Global import G
+
 
 class BaseDao:
     """
@@ -8,12 +10,18 @@ class BaseDao:
     CRUD基础Dao类，拥有基本方法，可直接继承使用
     """
 
+    # 数据库连接session
     db: Session = None
+    # 实体对象
+    Entity = None
 
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self, db: Session = None):
+        if db:
+            self.db = db
+        else:
+            self.db = G.db
 
-    def insert(self, entity):
+    def create(self, entity):
         """
         创建一条数据
         :param entity: 数据模型实例
@@ -21,15 +29,16 @@ class BaseDao:
         self.db.add(entity)
         self.db.flush()
 
-    def read(self, Entity, id: int):
+        return entity.id
+
+    def read(self, id: int):
         """
         读取一条数据
-        :param Entity: 对象
         :param id: 数据id
         :return: 数据模型实例
         """
 
-        return self.db.query(Entity).get(id)
+        return self.db.query(self.Entity).get(id)
 
     def update(self, entity):
         """
@@ -37,6 +46,7 @@ class BaseDao:
         :param entity: 数据模型实例
         :return:
         """
+
         self.db.add(entity)
         self.db.flush()
 

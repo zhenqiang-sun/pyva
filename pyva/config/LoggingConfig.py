@@ -9,7 +9,15 @@ class LoggingLevel:
     DEBUG: str = "DEBUG"
 
 
-def generateConfig(loggingPath: str, loggingLevel: str):
+def generateLoggingConfig(loggingPath: str, loggingLevel: str):
+    """
+    生成日志配置
+
+    :version: 1.0.2
+    :createdDate: 2022-10-01
+    :updatedDate: 2022-10-03
+    """
+
     loggingConfig: dict = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -110,4 +118,4 @@ def generateConfig(loggingPath: str, loggingLevel: str):
     return loggingConfig
 
 
-LoggingConfig = generateConfig("../logs/", LoggingLevel.DEBUG)
+LoggingConfig = generateLoggingConfig("../logs/", LoggingLevel.DEBUG)

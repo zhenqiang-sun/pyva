@@ -1,6 +1,6 @@
 from typing import List, Dict
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from pyva.util.JsonUtil import JsonUtil
 
@@ -14,7 +14,7 @@ class BaseDto(BaseModel):
         json_encoders = JsonUtil.jsonEncoders  # 使用自定义json转换
 
 
-class BaseEntitySchema(BaseModel):
+class BaseEntityDto(BaseModel):
     """
     基础Entity DTO
     """
@@ -28,60 +28,49 @@ class RespDto(BaseDto):
     """
     基础返回DTO
     """
-    code: int = 0  # 返回编号
-    message: str = ""  # 返回消息
+    code: int = Field(..., gt=0, description='返回码')
+    message: str = Field(..., description='返回说明')
 
 
-class RespIdDto(RespDto):
+class SuccessRespDto(RespDto):
+    """
+    成功响应DTO
+    """
+    code: int = 10000
+    message: str = "SUCCESS"
+
+
+class FailRespDto(RespDto):
+    """
+    失败响应DTO
+    """
+    code: int = 19999
+    message: str = "FAIL"
+
+
+class RespIdDto(SuccessRespDto):
     """
     ID返回DTO
     """
-    id: int = 0  # 返回id
+    id: int = Field(..., gt=0, description='数据ID')
 
 
-class RespDataDto(RespDto):
+class RespDataDto(SuccessRespDto):
     """
     Data返回DTO
     """
     data: dict = None  # 返回Data
 
 
-class RespSuccessDto(RespDataDto):
-    """
-    成功返回DTO
-    """
-    code = 10000
-    message = "SUCCESS"
-
-
-class RespErrorDto(RespDataDto):
-    """
-    成功返回DTO
-    """
-    code = 19999
-    message = "FAIL"
-
-
-class RespDetailDto(RespDto):
+class RespDetailDto(SuccessRespDto):
     """
     详情返回DTO
     """
     detail: dict = None  # 返回详情
 
 
-class RespListDto(RespDto):
+class RespListDto(SuccessRespDto):
     """
     列表返回DTO
     """
-    list: List[Dict] = None  # 数据list
-
-
-class RespPageDto(RespDto):
-    """
-    列表返回DTO
-    """
-    page: int = 0  # 当前页码
-    size: int = 0  # 每页大小
-    count: int = 0  # 数据总条数
-    pageCount: int = 0  # 总页数
     list: List[Dict] = None  # 数据list

@@ -1,5 +1,3 @@
-import json
-
 from redis import ConnectionPool, Redis
 
 from pyva.config.RedisConfig import RedisConfig
@@ -72,14 +70,14 @@ class RedisUtil:
 
     def set(self, key, value, ex=None):
         self.initConn()
-        return self.conn.set(key, json.dumps(value, ensure_ascii=False, cls=JsonUtil.jsonEncoders), ex)
+        return self.conn.set(key, JsonUtil.encode(value), ex)
 
     def get(self, key):
         self.initConn()
         value = self.conn.get(key)
 
         if value:
-            return json.loads(str(value, "utf-8"))
+            return JsonUtil.decode(str(value, "utf-8"))
         else:
             return None
 

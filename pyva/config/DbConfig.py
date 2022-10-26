@@ -1,6 +1,7 @@
-class DbConfig(object):
+class DbConfig:
     """
     pyva DbConfig DB配置类
+
     :version: 1.5
     :createdDate: 2020-02-11
     :updatedDate: 2022-10-03

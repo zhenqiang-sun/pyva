@@ -1,5 +1,4 @@
 import _thread
-import json
 import logging
 import os
 import random
@@ -10,6 +9,7 @@ import requests
 import yaml
 
 from pyva.config.NacosConfig import NacosConfig
+from pyva.util.JsonUtil import JsonUtil
 
 logger = logging.getLogger('nacos')
 
@@ -122,7 +122,7 @@ class NacosUtil:
         if self.nacosConfig.dataId.endswith(".yml"):
             self.config = yaml.full_load(configStr)
         elif self.nacosConfig.dataId.endswith(".json"):
-            self.config = json.loads(configStr)
+            self.config = JsonUtil.decode(configStr)
 
         return self.config
 

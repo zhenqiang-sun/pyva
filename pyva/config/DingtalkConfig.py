@@ -2,6 +2,7 @@
 class DingtalkConfig:
     """
     钉钉应用配置
+
     :version: 1.0
     :createdDate: 2020-02-28
     :updatedDate: 2022-10-03

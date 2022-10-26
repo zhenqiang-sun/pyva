@@ -1,6 +1,7 @@
-class RedisConfig(object):
+class RedisConfig:
     """
     pyva RedisConfig Redis配置类
+
     :version: 1.3
     :createdDate: 2020-02-11
     :updatedDate: 2022-10-03
@@ -11,7 +12,7 @@ class RedisConfig(object):
     # 端口
     port: int = 6379
     # 账号
-    username: str = None
+    username: str = "root"
     # 密码
     password: str = None
     # 数据库

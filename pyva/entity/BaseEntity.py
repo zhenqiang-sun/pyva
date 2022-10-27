@@ -1,5 +1,5 @@
 from humps.main import decamelize
-from sqlalchemy import Column, String, TIMESTAMP, text, DECIMAL, Date, DateTime, JSON, VARCHAR
+from sqlalchemy import Column, String, TIMESTAMP, text, DECIMAL, Date, DateTime, JSON, VARCHAR, Boolean
 from sqlalchemy.dialects.mysql import BIGINT, INTEGER, LONGTEXT, TINYINT
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import declared_attr
@@ -33,4 +33,4 @@ class BaseEntity(DeclarativeBase):
 
 
 if __name__ == "__main__":
-    Column, String, TIMESTAMP, text, DECIMAL, Date, DateTime, JSON, VARCHAR, BIGINT, INTEGER, LONGTEXT, TINYINT
+    Column, String, TIMESTAMP, text, DECIMAL, Date, DateTime, JSON, VARCHAR, BIGINT, INTEGER, LONGTEXT, TINYINT, Boolean

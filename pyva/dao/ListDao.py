@@ -24,8 +24,9 @@ class ListDao(BaseDao):
         filters = []
 
         # 判断：是否包含已软删除的数据
-        if hasattr(listReqDto, "deleted") and hasattr(self.Entity, "deleted") and listReqDto.deleted != 'all':
-            filters.append(self.Entity.deleted == 0)
+        if hasattr(self.Entity, "deleted"):
+            if not hasattr(listReqDto, "deleted") or (hasattr(listReqDto, "deleted") and listReqDto.deleted != 'all'):
+                filters.append(self.Entity.deleted == False)
 
         # 判断：是否限制指定用户的数据
         if hasattr(listReqDto, "userId") and hasattr(self.Entity, "userId") and listReqDto.userId:

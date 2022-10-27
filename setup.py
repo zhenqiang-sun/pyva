@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyva-framework",
-    version="3.1.0",
+    version="3.1.1",
     author="Zhenqiang Sun",
     author_email="zhenqiang.sun@gmail.com",
     description="PyVa = Python项目 + Java风格，这是一个工程框架库，包含DB、Redis、MongoDB、JSON等工具和基础服务类。",
@@ -24,18 +24,18 @@ setuptools.setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "fastapi==0.85.0",
-        "uvicorn==0.18.3",
-        "SQLAlchemy==1.4.41",
+        "fastapi==0.85.1",
+        "uvicorn==0.19.0",
+        "SQLAlchemy==1.4.42",
         "PyMySQL==1.0.2",
         "sqlacodegen==2.3.0",
         "redis==4.3.4",
         "requests==2.28.1",
-        "pyhumps==3.7.3",
+        "pyhumps==3.8.0",
         "nacos-sdk-python==0.1.8",
         "PyYAML==6.0",
         "python-multipart==0.0.5",
-        "pymongo==4.2.0",
-        "orjson==3.8.0",
+        "pymongo==4.3.2",
+        "orjson==3.8.1",
     ],
 )

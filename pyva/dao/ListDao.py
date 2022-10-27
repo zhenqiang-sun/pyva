@@ -24,18 +24,19 @@ class ListDao(BaseDao):
         filters = []
 
         # 判断：是否包含已软删除的数据
-        # if listReqDto.is_deleted != 'all':
-        #     filters.append(self.Entity.is_deleted == 0)
+        if hasattr(listReqDto, "deleted") and hasattr(self.Entity, "deleted") and listReqDto.deleted != 'all':
+            filters.append(self.Entity.deleted == 0)
 
         # 判断：是否限制指定用户的数据
-        if listReqDto.user_id:
-            filters.append(self.Entity.user_id == listReqDto.user_id)
+        if hasattr(listReqDto, "userId") and hasattr(self.Entity, "userId") and listReqDto.userId:
+            filters.append(self.Entity.userId == listReqDto.userId)
 
         # 增加：传入调整
-        filters.extend(self._handle_list_filters(listReqDto.filters))
+        if hasattr(listReqDto, "filters") and listReqDto.filters:
+            filters.extend(self._handleListFilters(listReqDto.filters))
 
         # 判断：是否进行关键词搜索
-        if listReqDto.keywords and hasattr(self.Entity, 'search'):
+        if hasattr(listReqDto, "keywords") and hasattr(self.Entity, 'search') and listReqDto.keywords:
             filters.append(and_(*[self.Entity.search.like('%' + kw + '%') for kw in listReqDto.keywords.split(' ')]))
 
         # 执行：数据检索
@@ -43,33 +44,37 @@ class ListDao(BaseDao):
         count = query.count()
 
         # 判断： 结果数，是否继续查询
-        if count > 0:
-            orders = self._handle_list_orders(listReqDto.orders)
-            obj_list = query.order_by(*orders).offset((listReqDto.page - 1) * listReqDto.size).limit(
+        if hasattr(listReqDto, "orders") and listReqDto.filters and count > 0:
+            orders = self._handleListOrders(listReqDto.orders)
+            objList = query.order_by(*orders).offset((listReqDto.page - 1) * listReqDto.size).limit(
                 listReqDto.size).all()
         else:
-            obj_list = []
+            objList = []
 
         # 构造：返回结构
         data = ListPageDto()
         data.page = listReqDto.page
         data.size = listReqDto.size
         data.count = count
-        data.page_count = math.ceil(count / listReqDto.size)  # 计算总页数
-        data.list = self._handle_list_keys(listReqDto.keys, obj_list)  # 处理list
+        data.pageCount = math.ceil(count / listReqDto.size)  # 计算总页数
+
+        if hasattr(listReqDto, "keys") and listReqDto.keys:
+            data.list = self._handleListKeys(listReqDto.keys, objList)  # 处理list
+        else:
+            data.list = objList
 
         return data
 
-    def _handle_list_filters(self, args_filters: ListFilterDto):
+    def _handleListFilters(self, argsFilters: ListFilterDto):
         """
         处理list接口传入的过滤条件
-        :param args_filters: 传入过滤条件
+        :param argsFilters: 传入过滤条件
         :return: 转换后的sqlalchemy过滤条件
         """
         filters = []
 
-        if args_filters:
-            for item in args_filters:
+        if argsFilters:
+            for item in argsFilters:
                 if hasattr(self.Entity, item.key):
                     attr = getattr(self.Entity, item.key)
 
@@ -98,16 +103,16 @@ class ListDao(BaseDao):
 
         return filters
 
-    def _handle_list_orders(self, args_orders: ListOrderDto):
+    def _handleListOrders(self, argsOrders: ListOrderDto):
         """
         处理list接口传入的排序条件
-        :param args_orders: 传入排序条件
+        :param argsOrders: 传入排序条件
         :return: 转换后的sqlalchemy排序条件
         """
         orders = []
 
-        if args_orders:
-            for item in args_orders:
+        if argsOrders:
+            for item in argsOrders:
                 if hasattr(self.Entity, item.key):
                     attr = getattr(self.Entity, item.key)
 
@@ -120,35 +125,35 @@ class ListDao(BaseDao):
 
         return orders
 
-    def _handle_list_keys(self, args_keys: ListKeyDto, obj_list: List):
+    def _handleListKeys(self, argsKeys: ListKeyDto, objList: List):
         """
         处理list返回数据，根据传入参数keys进行过滤
-        :param args_keys: 传入过滤字段
+        :param argsKeys: 传入过滤字段
         :return: 转换后的list数据，数据转为dict类型
         """
         keys = []
 
-        if args_keys:
-            for item in args_keys:
+        if argsKeys:
+            for item in argsKeys:
                 if hasattr(self.Entity, item.key):
                     keys.append(item)
 
-        resp_list = []
+        respList = []
 
-        for obj in obj_list:
-            dict_1 = EntityUtil.entityToDict(obj)
+        for obj in objList:
+            dict1 = EntityUtil.entityToDict(obj)
 
             # 判断：keys存在，不存在则返回所有字段
             if keys:
-                dict_2 = {}
+                dict2 = {}
                 for item in keys:
                     if item.rename:
-                        dict_2[item.rename] = dict_1[item.key]
+                        dict2[item.rename] = dict1[item.key]
                     else:
-                        dict_2[item.key] = dict_1[item.key]
+                        dict2[item.key] = dict1[item.key]
             else:
-                dict_2 = dict_1
+                dict2 = dict1
 
-            resp_list.append(dict_2)
+            respList.append(dict2)
 
-        return resp_list
+        return respList

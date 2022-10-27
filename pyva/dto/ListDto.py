@@ -37,7 +37,8 @@ class ListReqDto(BaseModel):
     page: int = 1  # 当前页码
     size: int = 10  # 每页条数
     keywords: str = None  # 关键字，用于模糊、分词搜索
-    user_id: int = None  # 数据对应用户id
+    deleted: str = None
+    userId: int = None  # 数据对应用户id
     filters: List[ListFilterDto] = None  # 过滤条件
     orders: List[ListOrderDto] = None  # 排序条件
     keys: List[ListKeyDto] = None  # 字段条件
@@ -50,5 +51,5 @@ class ListPageDto(BaseModel):
     page: int = 0  # 当前页码
     size: int = 0  # 每页大小
     count: int = 0  # 数据总条数
-    page_count: int = 0  # 总页数
+    pageCount: int = 0  # 总页数
     list: List[BaseEntityDto] = None  # 数据list

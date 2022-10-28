@@ -15,6 +15,8 @@ class G:
     path: str
     # 静态资源路径
     staticPath: str
+    # 临时文件路径
+    temporaryPath: str
     # 静态资源路径
     resPath: str
     # 日志输出

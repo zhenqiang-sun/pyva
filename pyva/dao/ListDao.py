@@ -48,11 +48,11 @@ class ListDao(BaseDao):
         if count == 0:
             objList = []
         else:
-            if hasattr(listReqDto, "orders") and listReqDto.filters:
+            if hasattr(listReqDto, "orders") and listReqDto.orders:
                 orders = self._handleListOrders(listReqDto.orders)
-                objList = query.order_by(*orders).offset((listReqDto.page - 1) * listReqDto.size).limit(listReqDto.size).all()
-            else:
-                objList = query.offset((listReqDto.page - 1) * listReqDto.size).limit(listReqDto.size).all()
+                query = query.order_by(*orders)
+
+            objList = query.offset((listReqDto.page - 1) * listReqDto.size).limit(listReqDto.size).all()
 
         # 构造：返回结构
         data = ListPageDto()

@@ -24,7 +24,7 @@ class DbConfig:
     # 表前缀
     prefix: str = ""
     # 是否输出
-    echo: bool = True
+    echo: bool = False
     # 连接池大小
     poolSize: int = 100
     # 最大连接
@@ -32,8 +32,8 @@ class DbConfig:
     # 回收时间
     poolRecycle: int = 60
     # 自动flush
-    autoFlush: bool = True
+    autoFlush: bool = False
     # 自动提交
-    autoCommit: bool = True
+    autoCommit: bool = False
     # 过期提交
     expireOnCommit: bool = False

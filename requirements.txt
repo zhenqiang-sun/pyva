@@ -1,0 +1,13 @@
+fastapi==0.85.1
+uvicorn==0.19.0
+SQLAlchemy==1.4.42
+PyMySQL==1.0.2
+sqlacodegen==2.3.0
+redis==4.3.4
+requests==2.28.1
+pyhumps==3.8.0
+nacos-sdk-python==0.1.8
+PyYAML==6.0
+python-multipart==0.0.5
+pymongo==4.3.2
+orjson==3.8.1

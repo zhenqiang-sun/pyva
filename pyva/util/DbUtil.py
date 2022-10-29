@@ -74,7 +74,9 @@ class DbUtil:
             pool_size=dbConfig.poolSize,
             max_overflow=dbConfig.maxOverflow,
             pool_recycle=dbConfig.poolRecycle,
-            echo=dbConfig.echo
+            pool_pre_ping=dbConfig.poolPrePing,
+            echo=dbConfig.echo,
+            **dbConfig.otherParam
         )
 
         session_factory = sessionmaker(

@@ -28,6 +28,7 @@ class BaseDao:
         """
         self.db.add(entity)
         # self.db.commit()
+        self.db.flush()
 
         return entity.id
 
@@ -49,6 +50,7 @@ class BaseDao:
 
         self.db.add(entity)
         # self.db.commit()
+        self.db.flush()
 
     def delete(self, entity):
         """
@@ -57,3 +59,4 @@ class BaseDao:
         """
         self.db.delete(entity)
         # self.db.commit()
+        self.db.flush()

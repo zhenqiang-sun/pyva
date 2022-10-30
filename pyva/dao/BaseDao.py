@@ -27,7 +27,7 @@ class BaseDao:
         :param entity: 数据模型实例
         """
         self.db.add(entity)
-        self.db.commit()
+        # self.db.commit()
 
         return entity.id
 
@@ -48,7 +48,7 @@ class BaseDao:
         """
 
         self.db.add(entity)
-        self.db.commit()
+        # self.db.commit()
 
     def delete(self, entity):
         """
@@ -56,4 +56,4 @@ class BaseDao:
         :param entity: 数据模型实体
         """
         self.db.delete(entity)
-        self.db.commit()
+        # self.db.commit()

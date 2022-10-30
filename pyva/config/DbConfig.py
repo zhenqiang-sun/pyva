@@ -8,7 +8,7 @@ class DbConfig:
     """
 
     # 驱动，默认mysql
-    driver: str = "mysql+pymysql"
+    driver: str = "mysql"
     # 主机
     host: str = "localhost"
     # 端口
@@ -36,8 +36,8 @@ class DbConfig:
     # 自动flush
     autoFlush: bool = False
     # 自动提交
-    autoCommit: bool = False
+    autoCommit: bool = True
     # 过期提交
-    expireOnCommit: bool = False
+    expireOnCommit: bool = True
     # 其他配置
     otherParam: dict = {}

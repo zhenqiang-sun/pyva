@@ -9,16 +9,20 @@ from pyva.util.RedisUtil import RedisUtil
 
 
 class G:
+    # 运行模式：是否Debug模式
+    debug: bool = False
     # 运行环境
-    env: str
+    env: str = None
     # 运行目录
-    path: str
+    path: str = None
     # 静态资源路径
-    staticPath: str
+    staticPath: str = None
     # 临时文件路径
-    temporaryPath: str
+    temporaryPath: str = None
     # 静态资源路径
-    resPath: str
+    resPath: str = None
+    # 静态资源路径
+    sqlPath: str = None
     # 日志输出
     logger = logging.getLogger('pyva')
     # 全局nacos

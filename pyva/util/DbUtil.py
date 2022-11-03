@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from decimal import Decimal
 from urllib.parse import quote_plus
@@ -6,6 +7,7 @@ from humps.main import camelize
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session, Session
 
+from pyva.Global import G
 from pyva.config.DbConfig import DbConfig
 
 
@@ -96,6 +98,9 @@ class DbUtil:
         :param params: 替换参数
         :return:
         """
+        if G.sqlPath:
+            filePath = G.sqlPath + os.sep + filePath
+
         sql = DbUtil.getFile(filePath)
         return sql.format(**params)
 

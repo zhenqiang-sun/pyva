@@ -12,7 +12,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyva-framework",
-    version="3.1.13",
+    version="3.1.14",
     author="Zhenqiang Sun",
     author_email="zhenqiang.sun@gmail.com",
     description="PyVa = Python项目 + Java风格，这是一个工程框架库，包含DB、Redis、MongoDB、JSON等工具和基础服务类。",

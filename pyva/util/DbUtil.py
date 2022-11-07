@@ -321,7 +321,7 @@ class DbUtil:
         :param where:
         :return:
         """
-        if not table or not obj or where:
+        if not table or not obj or not where:
             return ""
 
         table = DbUtil.handleSqlField(table)

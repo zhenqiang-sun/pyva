@@ -91,7 +91,7 @@ class DbUtil:
 
     # 根据文件获取SQL文件
     @staticmethod
-    def getSql(filePath, params: dict = None):
+    def getSql(filePath, params: dict = {}):
         """
         从文件中获取SQL语句
         :param filePath: 文件路径
@@ -226,6 +226,21 @@ class DbUtil:
         return ", ".join(fields)
 
     @staticmethod
+    def handleValue(value) -> str:
+        """
+        处理Sql的值，转义字符串
+        :param value:
+        :return:
+        """
+
+        return str(value).replace(
+            "\\", "\\\\").replace(
+            '\"', '\\\"').replace(
+            ":", "\\:").replace(
+            "%", "\\%").replace(
+            "_", "\\_")
+
+    @staticmethod
     def handleSqlValue(value) -> str:
         """
         处理Sql的值，转义字符串
@@ -242,13 +257,7 @@ class DbUtil:
         elif "" == value:
             return '""'
         else:
-            value = str(value).replace(
-                "\\", "\\\\").replace(
-                '\"', '\\\"').replace(
-                ":", "\\:").replace(
-                "%", "\\%").replace(
-                "_", "\\_")
-            return '"{}"'.format(value)
+            return '"{}"'.format(DbUtil.handleValue(value))
 
     @staticmethod
     def getSqlValues(obj: dict) -> str:

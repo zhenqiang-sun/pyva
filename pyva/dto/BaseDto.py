@@ -1,8 +1,10 @@
-from typing import List, Dict
+from typing import List, Dict, TypeVar
 
 from pydantic import BaseModel, Field
 
 from pyva.util.JsonUtil import JsonUtil
+
+DataT = TypeVar("DataT")
 
 
 class BaseDto(BaseModel):

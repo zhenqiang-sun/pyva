@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from pyva.dto.BaseDto import BaseEntityDto
+from pyva.dto.BaseDto import BaseEntityDto, DataT
 
 
 class ListFilterDto(BaseModel):
@@ -11,7 +11,7 @@ class ListFilterDto(BaseModel):
     """
     key: str  # 字段名
     condition: str  # 条件
-    value: str  # 条件值，如condition为in或!in时，value为用“,”分割的多值得字符串
+    value: DataT  # 条件值，如condition为in或!in时，value为用“,”分割的多值得字符串
 
 
 class ListOrderDto(BaseModel):

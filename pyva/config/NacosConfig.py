@@ -34,3 +34,9 @@ class NacosConfig:
     dataId: str
     # 心跳频率，单位秒
     heartInterval: int = 5
+    clusterName = None
+    weight = 1.0
+    metadata = None
+    enable = True
+    healthy = True
+    ephemeral = True

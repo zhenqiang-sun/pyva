@@ -7,6 +7,8 @@ import qrcode
 import requests
 from PIL import Image
 
+from pyva.Global import G
+
 
 def decodeQrcode(img_path):
     dir_path = os.path.abspath(os.curdir)
@@ -44,7 +46,7 @@ def decodeQrcode(img_path):
 
 
 def decodeQrcodeByMuxiaoguoApi(img_path):
-    print('decode by muxiaoguo api: {}'.format(img_path))
+    G.logger.info('decode by muxiaoguo api: {}'.format(img_path))
     api_url = 'https://api.muxiaoguo.cn/api/QrcodeRT?api_key=0d5f8678d522a4b2&url={}'.format(img_path)
     resp = requests.get(api_url)
 
@@ -52,12 +54,12 @@ def decodeQrcodeByMuxiaoguoApi(img_path):
         data = resp.json()
         return str(data.get('data', {}).get('content', ''))
     else:
-        print('decode error by muxiaoguo api: {}'.format(api_url))
+        G.logger.error('decode error by muxiaoguo api: {}'.format(api_url))
         return '解析失败'
 
 
 def decodeQrcodeByUomgApi(img_path):
-    print('decode by uomg api: {}'.format(img_path))
+    G.logger.info('decode by uomg api: {}'.format(img_path))
     api_url = 'https://api.uomg.com/api/qr.encode?url={}'.format(img_path)
     resp = requests.get(api_url)
 
@@ -65,12 +67,12 @@ def decodeQrcodeByUomgApi(img_path):
         data = resp.json()
         return data.get('qrurl', '')
     else:
-        print('decode error by uomg api: {}'.format(api_url))
+        G.logger.error('decode error by uomg api: {}'.format(api_url))
         return '解析失败'
 
 
 def decodeQrcodeByCaoliaoApi(img_path):
-    print('decode by caoliao api: {}'.format(img_path))
+    G.logger.info('decode by caoliao api: {}'.format(img_path))
     api_url = 'https://cli.im/Api/Browser/deqr'
     resp = requests.post(api_url, data={'data': img_path})
 
@@ -83,7 +85,7 @@ def decodeQrcodeByCaoliaoApi(img_path):
         else:
             return '解析失败2'
     else:
-        print('decode error by caoliao api: {}'.format(api_url))
+        G.logger.error('decode error by caoliao api: {}'.format(api_url))
         return '解析失败1'
 
 

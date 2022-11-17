@@ -70,7 +70,13 @@ class NacosUtil:
             self.nacosConfig.serviceName,
             self.nacosConfig.serviceIp,
             self.nacosConfig.servicePort,
-            None, 1, None, True, True, True)
+            self.nacosConfig.clusterName,
+            self.nacosConfig.weight,
+            self.nacosConfig.metadata,
+            self.nacosConfig.enable,
+            self.nacosConfig.healthy,
+            self.nacosConfig.ephemeral,
+            self.nacosConfig.group)
 
         # 发送心跳
         _thread.start_new_thread(self.sendHeartbeat, ())
@@ -96,9 +102,13 @@ class NacosUtil:
                     self.nacosConfig.serviceName,
                     self.nacosConfig.serviceIp,
                     self.nacosConfig.servicePort,
-                    None, 1, None)
+                    self.nacosConfig.clusterName,
+                    self.nacosConfig.weight,
+                    self.nacosConfig.metadata,
+                    self.nacosConfig.ephemeral,
+                    self.nacosConfig.group)
             except:
-                print("Nacos服务器连接失败")
+                logger.error("Nacos服务器连接失败")
 
             time.sleep(self.nacosConfig.heartInterval)
 

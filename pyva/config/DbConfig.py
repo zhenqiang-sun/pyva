@@ -8,7 +8,7 @@ class DbConfig:
     """
 
     # 驱动，默认mysql
-    driver: str = "mysql"
+    driver: str = "mysql+pymysql"
     # 主机
     host: str = "localhost"
     # 端口

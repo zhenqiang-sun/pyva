@@ -6,8 +6,15 @@ import orjson
 
 class JsonUtil:
     """
-    定义JSONEncoders
+    JSON工具类
+
+    作者：孙振强
+    版本：2.0.1
+    创建时间：2022-10-07
+    修改时间：2023-11-21
     """
+
+    # 定义JSONEncoders
     jsonEncoders = {
         # 解决日期和时间中“T”字符的格式问题
         datetime.datetime: lambda dt: dt.isoformat(" "),

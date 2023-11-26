@@ -18,6 +18,10 @@ class AppConfig:
     description: str = "PyVa项目示例，基于FastAPI。"
     # 应用版本
     version: str = "1.0.1"
+    # 应用根目录
+    rootPath: str = ""
+    # 应用代码目录
+    srcPath: str = ""
     # 应用端口
     port: int = 9000
     # 运行环境：prod、pre、test、dev、local
@@ -28,3 +32,5 @@ class AppConfig:
     workers: int = 2
     # token有效秒数
     tokenExpire: int = 86400
+    # log输出值钉钉
+    log2dingtalk: bool = False

@@ -1,14 +1,19 @@
-fastapi==0.85.1
-uvicorn==0.19.0
-SQLAlchemy==1.4.42
-PyMySQL==1.0.2
+# pip install -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt
+fastapi==0.104.1
+uvicorn==0.24.0  # 的是
+SQLAlchemy==2.0.23
+PyMySQL==1.1.0
 sqlacodegen==2.3.0
-redis==4.3.4
-requests==2.28.1
+redis==5.0.1  # 测试
+requests==2.31.0
 pyhumps==3.8.0
-nacos-sdk-python==0.1.8
-PyYAML==6.0
-python-multipart==0.0.5
-pymongo==4.3.2
-orjson==3.8.1
-openpyxl==3.0.10
+nacos-sdk-python==0.1.14
+PyYAML==6.0.1
+python-multipart==0.0.6
+pymongo==4.6.0
+orjson==3.9.10
+openpyxl==3.1.2
+deprecated==1.2.14
+jinja2==3.1.2
+typer[all]==0.9.0
+py-ulid==1.0.3

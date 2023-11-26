@@ -51,7 +51,7 @@ class MongoUtils(object):
         else:
             self._config = self.default_config
 
-    def _getClient(self):
+    def getClient(self):
         """
         返回Mongo数据库连接，同步
         :return:
@@ -62,7 +62,7 @@ class MongoUtils(object):
         except Exception as e:
             raise str(e)
 
-    def _getDb(self):
+    def getDb(self):
         """
         返回Mongo数据库实例
         :param database:
@@ -70,7 +70,7 @@ class MongoUtils(object):
         """
 
         try:
-            client = self._getClient()
+            client = self.getClient()
             db = client[self._config.database]
             return db
         except Exception as e:
@@ -84,7 +84,7 @@ class MongoUtils(object):
         """
 
         try:
-            db = self._getDb()
+            db = self.getDb()
             collection: Collection = db[collection_name]
             return collection
         except Exception as e:

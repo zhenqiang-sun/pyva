@@ -19,7 +19,8 @@ class FastapiConfig:
     docs_url: str = "/docs"
     redoc_url: str = "/redoc"
     default_response_class: ORJSONResponse
-
+    # 是否支持跨域
+    allowCors: bool = True
     # CORS配置
     corsOrigins: list = [
         "http://localhost",

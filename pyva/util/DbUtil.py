@@ -29,6 +29,7 @@ class DbUtil:
         """
         self.config = dbConfig
         self.sess = self.getSession(dbConfig)
+        self.sess.autocommit = dbConfig.autoCommit
 
     def __del__(self):
         """
@@ -82,7 +83,7 @@ class DbUtil:
         )
 
         session_factory = sessionmaker(
-            autocommit=dbConfig.autoCommit,
+            # autocommit=dbConfig.autoCommit,
             autoflush=dbConfig.autoFlush,
             bind=engine,
             expire_on_commit=dbConfig.expireOnCommit)
@@ -237,8 +238,7 @@ class DbUtil:
             "\\", "\\\\").replace(
             '\"', '\\\"').replace(
             ":", "\\:").replace(
-            "%", "\\%").replace(
-            "_", "\\_")
+            "%", "\\%")
 
     @staticmethod
     def handleSqlValue(value) -> str:

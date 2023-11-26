@@ -32,7 +32,7 @@ class BaseDao:
 
         return entity.id
 
-    def read(self, id: int):
+    def read(self, id: int | str):
         """
         读取一条数据
         :param id: 数据id

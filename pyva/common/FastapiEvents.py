@@ -1,9 +1,8 @@
 import datetime
 import os
 
-from src.Global import G
-from src.config.AppConfig import AppConfig
-from src.config.FastapiConfig import FastapiConfig
+from pyva.Global import G
+from pyva.config.FastapiConfig import FastapiConfig
 
 
 class FastapiEvents:
@@ -14,24 +13,24 @@ class FastapiEvents:
         with open(logoPath, "r", encoding="utf-8") as f:
             logoText = f.read()
 
-        if AppConfig.https:
+        if FastapiConfig.https:
             protocol = "https"
         else:
             protocol = "http"
 
-        info = f"""{AppConfig.name} startup at {datetime.datetime.now()}
+        info = f"""{FastapiConfig.title} startup at {datetime.datetime.now()}
 {FastapiConfig.title}, {FastapiConfig.description}
 {logoText}
-Visit Root: {protocol}://localhost:{AppConfig.port}
+Visit Root: {protocol}://localhost:{FastapiConfig.port}
 """
         if FastapiConfig.docs_url:
-            info += f"Visit Docs: {protocol}://localhost:{AppConfig.port}{FastapiConfig.docs_url}"
+            info += f"Visit Docs: {protocol}://localhost:{FastapiConfig.port}{FastapiConfig.docs_url}"
 
         G.logger.warning(info)
 
     @staticmethod
     def shutdown():
         G.logger.warning("{} shutdown at {}".format(
-            AppConfig.name,
+            FastapiConfig.title,
             datetime.datetime.now()
         ))

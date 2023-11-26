@@ -32,5 +32,7 @@ class AppConfig:
     workers: int = 2
     # token有效秒数
     tokenExpire: int = 86400
-    # log输出值钉钉
+    # log输出至钉钉
     log2dingtalk: bool = False
+    # 安全模式：是否启用HTTPS
+    https = False

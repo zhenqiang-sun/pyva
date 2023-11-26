@@ -3,9 +3,9 @@ from fastapi.exceptions import RequestValidationError, HTTPException
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 
+from pyva.Global import G
 from pyva.common.FastapiEvents import FastapiEvents
 from pyva.common.FastapiException import FastapiException
-from src.Global import G
 
 
 def initAppOnly(FastapiConfig):

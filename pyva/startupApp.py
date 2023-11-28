@@ -4,8 +4,11 @@ from pyva.util.ConfigUtil import ConfigUtil
 
 
 # 运行项目
-def initUvicornConfig(AppConfig, LoggingConfig):
+def initUvicornConfig(AppConfig, LoggingConfig, debug):
     ConfigUtil.initConfigForStartup(AppConfig)
+
+    if debug:
+        AppConfig.debug = debug
 
     uvicornConfig = {
         "app": "src.Application:App",

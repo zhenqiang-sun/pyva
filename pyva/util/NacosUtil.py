@@ -1,5 +1,4 @@
 import _thread
-import logging
 import os
 import random
 import time
@@ -8,11 +7,10 @@ import nacos
 import requests
 import yaml
 
+from pyva.Global import G
 from pyva.config.NacosConfig import NacosConfig
 from pyva.util.DictUtil import DictUtil
 from pyva.util.JsonUtil import JsonUtil
-
-logger = logging.getLogger('nacos')
 
 
 class NacosUtil:
@@ -109,7 +107,7 @@ class NacosUtil:
                     self.nacosConfig.ephemeral,
                     self.nacosConfig.group)
             except:
-                logger.error("Nacos服务器连接失败")
+                G.logger.error("Nacos服务器连接失败")
 
             time.sleep(self.nacosConfig.heartInterval)
 
@@ -134,6 +132,7 @@ class NacosUtil:
         config = {}
 
         for dataId in self.nacosConfig.dataIdList:
+            G.logger.info(f"Nacos配置文件读取：{dataId}")
             try:
                 configStr = self.client.get_config(dataId, self.nacosConfig.group)
                 if configStr:
@@ -142,9 +141,9 @@ class NacosUtil:
                     elif dataId.endswith(".json"):
                         DictUtil.mergeDict(config, JsonUtil.decode(configStr))
                     else:
-                        logger.error(f"Nacos配置文件后缀不支持：{dataId}")
+                        G.logger.error(f"Nacos配置文件后缀不支持：{dataId}")
             except Exception as e:
-                logger.error(f"Nacos配置文件读取失败：{dataId}，错误：{e}")
+                G.logger.error(f"Nacos配置文件读取失败：{dataId}，错误：{e}")
 
         self.config = config
 
@@ -200,7 +199,7 @@ class NacosUtil:
         if resp.status_code == 200:
             return resp.json()
         else:
-            logger.error(resp.text)
+            G.logger.error(resp.text)
 
             try:
                 return resp.json()

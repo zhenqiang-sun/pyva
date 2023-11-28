@@ -37,19 +37,18 @@ class ConfigUtil:
             G.logger.warning(f"{configName}，文件不存在")
             return {}
         else:
-            G.logger.info(f"{configName}，加载中")
+            G.logger.info(f"读取本地配置文件：{configName}")
             try:
                 with open(configPath, "r", encoding="utf-8") as f:
                     config = yaml.load(f, Loader=yaml.FullLoader)
 
                     if not config:
-                        G.logger.warning(f"{configName}，为空文件")
+                        G.logger.warning(f"本地配置文件：{configName}，为空文件")
                         return {}
                     elif not isinstance(config, dict):
                         G.logger.error(f"{configName}，文件内容异常: {config}")
                         exit(1)
 
-                    G.logger.info(f"{configName}，加载成功")
                     return config
             except Exception as e:
                 G.logger.error(f"{configName}，文件无法加载，错误信息：{e}")

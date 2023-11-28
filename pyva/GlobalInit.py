@@ -9,7 +9,7 @@ def GlobalInit(AppConfig):
         return False
 
     from pyva.util.ConfigUtil import ConfigUtil
-    ConfigUtil.initConfigForStartup(AppConfig)
+    ConfigUtil.initConfigForGlobal(AppConfig)
 
     # 运行模式：是否Debug模式
     G.debug = AppConfig.debug

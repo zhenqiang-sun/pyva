@@ -1,14 +1,17 @@
+import sys
+
 import uvicorn
 
 from pyva.util.ConfigUtil import ConfigUtil
 
 
 # 运行项目
-def initUvicornConfig(AppConfig, LoggingConfig, debug):
+def initUvicornConfig(AppConfig):
     ConfigUtil.initConfigForStartup(AppConfig)
+    LoggingConfig = ConfigUtil.importConfig(AppConfig.srcPath, "logging")
 
-    if debug:
-        AppConfig.debug = debug
+    if "debug" in sys.argv:
+        AppConfig.debug = True
 
     uvicornConfig = {
         "app": "src.Application:App",

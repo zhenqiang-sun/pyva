@@ -3,3 +3,4 @@
 class DingtalkRobotConfig:
     accessToken = ""
     keywords = ["系统"]
+    secret = ""

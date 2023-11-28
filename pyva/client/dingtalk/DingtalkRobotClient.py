@@ -1,6 +1,12 @@
-import requests
-from pyva.Global import G
+import base64
+import hashlib
+import hmac
+import time
+import urllib.parse
 
+import requests
+
+from pyva.Global import G
 from pyva.config.DingtalkRobotConfig import DingtalkRobotConfig
 
 
@@ -11,7 +17,7 @@ class DingtalkRobotClient:
     """
 
     @staticmethod
-    def verify_keyword(content: str):
+    def verifyKeyword(content: str):
         """
         验证关键词
         :param content: 验证内容
@@ -27,22 +33,42 @@ class DingtalkRobotClient:
         return True
 
     @staticmethod
-    def send_message(data: dict):
+    def getSign():
+        """
+        获取签名
+        :param timestamp: 时间戳
+        :param secret: 密钥
+        :return: 签名
+        """
+        timestamp = str(round(time.time() * 1000))
+        secret = DingtalkRobotConfig.secret
+        secret_enc = secret.encode('utf-8')
+        string_to_sign = '{}\n{}'.format(timestamp, secret)
+        string_to_sign_enc = string_to_sign.encode('utf-8')
+        hmac_code = hmac.new(secret_enc, string_to_sign_enc, digestmod=hashlib.sha256).digest()
+        sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
+
+        return timestamp, sign
+
+    @staticmethod
+    def sendMessage(data: dict):
         """
         基础方法-发送消息
         :param data:
         :return: 发送结果
         """
 
-        if not DingtalkRobotClient.verify_keyword(str(data)):
-            return None
+        webhookUrl = f"https://oapi.dingtalk.com/robot/send?access_token={DingtalkRobotConfig.accessToken}"
 
-        webhook_url = "https://oapi.dingtalk.com/robot/send?access_token={accessToken}"
-        url = webhook_url.format(accessToken=DingtalkRobotConfig.accessToken)
+        if DingtalkRobotConfig.secret:
+            timestamp, sign = DingtalkRobotClient.getSign()
+            webhookUrl = f"{webhookUrl}&timestamp={timestamp}&sign={sign}"
+        elif not DingtalkRobotClient.verifyKeyword(str(data)):
+            return None
 
         try:
             resp = requests.post(
-                url=url,
+                url=webhookUrl,
                 json=data,
                 timeout=1000
             )
@@ -56,7 +82,7 @@ class DingtalkRobotClient:
             return None
 
     @staticmethod
-    def data_add_at(data, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
+    def dataAddAt(data, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
         """
         添加data的at信息
         :param data:
@@ -76,7 +102,7 @@ class DingtalkRobotClient:
         return data
 
     @staticmethod
-    def send_text(content: str, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
+    def sendText(content: str, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
         """
         发送文本消息
 
@@ -93,10 +119,10 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.send_message(DingtalkRobotClient.data_add_at(data, atMobiles, atUserIds, isAtAll))
+        DingtalkRobotClient.sendMessage(DingtalkRobotClient.dataAddAt(data, atMobiles, atUserIds, isAtAll))
 
     @staticmethod
-    def send_link(title: str, text: str, messageUrl: str, picUrl: str = None, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
+    def sendLink(title: str, text: str, messageUrl: str, picUrl: str = None, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
         """
         发送链接消息
 
@@ -119,10 +145,10 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.send_message(DingtalkRobotClient.data_add_at(data, atMobiles, atUserIds, isAtAll))
+        DingtalkRobotClient.sendMessage(DingtalkRobotClient.dataAddAt(data, atMobiles, atUserIds, isAtAll))
 
     @staticmethod
-    def send_markdown(title: str, text: str, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
+    def sendMarkdown(title: str, text: str, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
         """
         发送Markdown消息
 
@@ -142,10 +168,10 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.send_message(DingtalkRobotClient.data_add_at(data, atMobiles, atUserIds, isAtAll))
+        DingtalkRobotClient.sendMessage(DingtalkRobotClient.dataAddAt(data, atMobiles, atUserIds, isAtAll))
 
     @staticmethod
-    def send_whole_action_card(title: str, text: str, singleTitle: str, singleURL: str, btnOrientation: str = None):
+    def sendWholeActionCard(title: str, text: str, singleTitle: str, singleURL: str, btnOrientation: str = None):
         """
         发送整体跳转ActionCard消息
         :param title: 首屏会话透出的展示内容。
@@ -167,10 +193,10 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.send_message(data)
+        DingtalkRobotClient.sendMessage(data)
 
     @staticmethod
-    def send_btns_action_card(title: str, text: str, btns: list, btnOrientation: str = None):
+    def sendBtnsActionCard(title: str, text: str, btns: list, btnOrientation: str = None):
         """
         发送独立跳转ActionCard消息
         :param title: 首屏会话透出的展示内容。
@@ -190,10 +216,10 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.send_message(data)
+        DingtalkRobotClient.sendMessage(data)
 
     @staticmethod
-    def send_feed_card(links: list):
+    def sendFeedCard(links: list):
         """
         发送FeedCard类型消息
         :param links:
@@ -207,4 +233,4 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.send_message(data)
+        DingtalkRobotClient.sendMessage(data)

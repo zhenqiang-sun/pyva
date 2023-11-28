@@ -40,7 +40,7 @@ class LoggingHandler(logging.Handler):
 - 消息：{log_message}
 '''
 
-        DingtalkRobotClient.send_markdown(
+        DingtalkRobotClient.sendMarkdown(
             title=title,
             text=text,
             # isAtAll=True

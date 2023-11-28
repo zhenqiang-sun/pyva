@@ -44,6 +44,9 @@ class G:
         if G.isInitialized:
             return False
 
+        from pyva.util.ConfigUtil import ConfigUtil
+        ConfigUtil.initConfigForStartup(AppConfig)
+
         # 运行模式：是否Debug模式
         G.debug = AppConfig.debug
         # 运行环境

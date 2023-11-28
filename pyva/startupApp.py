@@ -1,10 +1,12 @@
-import sys
-
 import uvicorn
+
+from pyva.util.ConfigUtil import ConfigUtil
 
 
 # 运行项目
 def initUvicornConfig(AppConfig, LoggingConfig):
+    ConfigUtil.initConfigForStartup(AppConfig)
+
     uvicornConfig = {
         "app": "src.Application:App",
         "host": "0.0.0.0",

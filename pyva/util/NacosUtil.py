@@ -9,6 +9,7 @@ import requests
 import yaml
 
 from pyva.config.NacosConfig import NacosConfig
+from pyva.util.DictUtil import DictUtil
 from pyva.util.JsonUtil import JsonUtil
 
 logger = logging.getLogger('nacos')
@@ -27,7 +28,7 @@ class NacosUtil:
     client = None
     config = None
 
-    def __init__(self, nacosConfig: NacosConfig):
+    def __init__(self, nacosConfig: NacosConfig, serviceEnabled=True):
         """
         初始化
         """
@@ -62,7 +63,7 @@ class NacosUtil:
             elif os.getenv("SERVICE_IP"):
                 nacosConfig.serviceIp = os.getenv("SERVICE_IP")
 
-        if not nacosConfig.serviceEnabled:
+        if not nacosConfig.serviceEnabled or not serviceEnabled:
             return
 
         # 注册实例
@@ -127,17 +128,33 @@ class NacosUtil:
         获取配置
         :return:
         """
-        configStr = self.client.get_config(self.nacosConfig.dataId, self.nacosConfig.group)
+        if not self.nacosConfig.dataIdList:
+            self.nacosConfig.dataIdList = [self.nacosConfig.dataId]
 
-        if self.nacosConfig.dataId.endswith(".yml"):
-            self.config = yaml.full_load(configStr)
-        elif self.nacosConfig.dataId.endswith(".json"):
-            self.config = JsonUtil.decode(configStr)
+        config = {}
+
+        for dataId in self.nacosConfig.dataIdList:
+            try:
+                configStr = self.client.get_config(dataId, self.nacosConfig.group)
+                if configStr:
+                    if dataId.endswith(".yml"):
+                        DictUtil.mergeDict(config, yaml.full_load(configStr))
+                    elif dataId.endswith(".json"):
+                        DictUtil.mergeDict(config, JsonUtil.decode(configStr))
+                    else:
+                        logger.error(f"Nacos配置文件后缀不支持：{dataId}")
+            except Exception as e:
+                logger.error(f"Nacos配置文件读取失败：{dataId}，错误：{e}")
+
+        self.config = config
 
         return self.config
 
     @staticmethod
     def resetConfig(obj: object, config: dict):
+        if not config:
+            return
+
         for key, value in config.items():
             if hasattr(obj, key):
                 setattr(obj, key, value)

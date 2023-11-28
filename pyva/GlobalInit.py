@@ -28,6 +28,10 @@ def GlobalInit(AppConfig):
     # 静态资源路径
     G.resPath = AppConfig.rootPath + os.sep + "res"
 
+    # 配置日志处理器
     G.logger.addHandler(LoggingHandler())
+
+    # G初始化完成
+    G.isInitialized = True
 
     return True

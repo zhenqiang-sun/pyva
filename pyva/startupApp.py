@@ -28,6 +28,10 @@ def initUvicornConfig(AppConfig):
         uvicornConfig["reload"] = True
         uvicornConfig["reload_dirs"] = [AppConfig.srcPath]
 
+    if AppConfig.https:
+        uvicornConfig["ssl_keyfile"] = AppConfig.srcPath + "/template/cert.key"
+        uvicornConfig["ssl_certfile"] = AppConfig.srcPath + "/template/cert_public.crt"
+
     return uvicornConfig
 
 

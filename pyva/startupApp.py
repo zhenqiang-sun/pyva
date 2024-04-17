@@ -2,11 +2,13 @@ import sys
 
 import uvicorn
 
+from pyva.Global import G
 from pyva.util.ConfigUtil import ConfigUtil
 
 
 # 运行项目
 def initUvicornConfig(AppConfig):
+    G.logger.info("initUvicornConfig")
     ConfigUtil.initConfigForStartup(AppConfig)
     LoggingConfig = ConfigUtil.importConfig(AppConfig.srcPath, "logging")
 
@@ -30,4 +32,5 @@ def initUvicornConfig(AppConfig):
 
 
 def runUvicorn(uvicornConfig):
+    G.logger.info("runUvicorn")
     uvicorn.run(**uvicornConfig)

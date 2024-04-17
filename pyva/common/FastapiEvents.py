@@ -1,8 +1,8 @@
-import datetime
 import os
 
 from pyva.Global import G
 from pyva.config.FastapiConfig import FastapiConfig
+from pyva.util.TimeUtil import TimeUtil
 
 
 class FastapiEvents:
@@ -18,8 +18,9 @@ class FastapiEvents:
         else:
             protocol = "http"
 
-        info = f"""{FastapiConfig.title} startup at {datetime.datetime.now()}
-{FastapiConfig.title}, {FastapiConfig.description}
+        info = f"""启动于：{TimeUtil.getDatetimeStrNow()}
+{FastapiConfig.name} - {FastapiConfig.title}
+{FastapiConfig.description}
 {logoText}
 Visit Root: {protocol}://localhost:{FastapiConfig.port}
 """
@@ -30,7 +31,7 @@ Visit Root: {protocol}://localhost:{FastapiConfig.port}
 
     @staticmethod
     def shutdown():
-        G.logger.warning("{} shutdown at {}".format(
-            FastapiConfig.title,
-            datetime.datetime.now()
-        ))
+        info = f"""停止于：{TimeUtil.getDatetimeStrNow()}
+{FastapiConfig.name} - {FastapiConfig.title}
+"""
+        G.logger.warning(info)

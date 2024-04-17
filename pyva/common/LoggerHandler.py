@@ -24,20 +24,23 @@ class LoggingHandler(logging.Handler):
             return
 
         log_message = self.format(record)
-        title = "系统代码运行异常上报"
+        title = "系统代码运行上报"
         text = f'''#### {title}
-- 环境名：{AppConfig.env}
-- 环境IP：{IpUtil.getHostIp()}
+- 环境：{AppConfig.env}
+- IP：{IpUtil.getHostIp()}
 - 服务：{AppConfig.name}
 - 调试：{AppConfig.debug}
 - 级别：{record.levelname}
-- 时间：{TimeUtil.getFormatDatetimeFromTimestamp(record.created)}
+- 时间：{TimeUtil.formatTimestamp(record.created)}
 - 线程：{record.thread}
 - 文件：{record.filename}
 - 行号：{record.lineno}
 - 模块：{record.module}
 - 函数：{record.funcName}
-- 消息：{log_message}
+- 消息：
+```
+{log_message}
+```
 '''
 
         DingtalkRobotClient.sendMarkdown(

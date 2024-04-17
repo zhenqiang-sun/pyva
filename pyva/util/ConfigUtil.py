@@ -120,7 +120,7 @@ class ConfigUtil:
         return applicationConfig
 
     @staticmethod
-    def readApplicationConfigByNacos(srcPath, applicationConfig, serviceEnabled=True):
+    def readApplicationConfigByNacos(srcPath, applicationConfig: dict, serviceEnabled=True):
         """
         通过Nacos读取应用配置
 
@@ -129,6 +129,10 @@ class ConfigUtil:
             applicationConfig (object): 应用配置对象
             serviceEnabled (bool, optional): Nacos服务是否启用，默认为True
         """
+
+        if not hasattr(applicationConfig, "nacos"):
+            return
+
         NacosConfig = ConfigUtil.importConfig(srcPath, "nacos")
 
         if NacosConfig:

@@ -10,12 +10,13 @@ class MongoConfig(object):
     """
 
     host = 'mongodb'
-    port = '27017'
+    port = 27017
     username = 'root'
     password = ''
     database = ''
+    authDatabase = ''
 
-    def get_url(self):
+    def getUrl(self):
         config = [
             'mongodb://',
             self.username,
@@ -24,32 +25,32 @@ class MongoConfig(object):
             '@',
             self.host,
             ':',
-            self.port,
+            str(self.port),
             '/',
             self.database,
             '?authSource=',
-            self.database,
+            self.authDatabase,
             '&authMechanism=SCRAM-SHA-256',
         ]
 
         return ''.join(config)
 
 
-class MongoUtils(object):
+class MongoUtil(object):
     """
     MongoUtils MongoDB工具类
     :version: 1.1
     :date: 2020-02-12
     """
 
-    _config: MongoConfig = None
-    default_config: MongoConfig = None
+    config: MongoConfig = None
+    defaultConfig: MongoConfig = None
 
     def __init__(self, config: MongoConfig = None):
         if config:
-            self._config = config
+            self.config = config
         else:
-            self._config = self.default_config
+            self.config = self.defaultConfig
 
     def getClient(self):
         """
@@ -57,7 +58,7 @@ class MongoUtils(object):
         :return:
         """
         try:
-            client = MongoClient(self._config.get_url())
+            client = MongoClient(self.config.getUrl())
             return client
         except Exception as e:
             raise str(e)
@@ -71,7 +72,7 @@ class MongoUtils(object):
 
         try:
             client = self.getClient()
-            db = client[self._config.database]
+            db = client[self.config.database]
             return db
         except Exception as e:
             raise str(e)

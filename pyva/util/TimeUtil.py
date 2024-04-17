@@ -1,8 +1,7 @@
 import time
 from datetime import datetime
 from time import struct_time
-
-from deprecated import deprecated
+from warnings import warn
 
 
 class TimeUtil:
@@ -46,8 +45,8 @@ class TimeUtil:
         return TimeUtil.format(timeObj, timeFormat)
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：formatTime")
     def getFormatTime(timeObj):
+        warn("请使用新方法：formatTime", DeprecationWarning)
         return TimeUtil.formatTime(timeObj)
 
     @staticmethod
@@ -58,8 +57,8 @@ class TimeUtil:
         return TimeUtil.format(timeObj, timeFormat)
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：formatDate")
     def getFormatDate(timeObj):
+        warn("请使用新方法：formatDate", DeprecationWarning)
         return TimeUtil.formatDate(timeObj)
 
     @staticmethod
@@ -70,8 +69,8 @@ class TimeUtil:
         return TimeUtil.format(timeObj, timeFormat)
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：formatDatetime")
     def getFormatDatetime(timeObj):
+        warn("请使用新方法：formatDatetime", DeprecationWarning)
         return TimeUtil.formatDatetime(timeObj)
 
     @staticmethod
@@ -88,8 +87,8 @@ class TimeUtil:
         return time.localtime(timestamp)
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：getTimeObj")
     def getLocalTime(timestamp):
+        warn("请使用新方法：getTimeObj", DeprecationWarning)
         return TimeUtil.getTimeObjByTimestamp(timestamp)
 
     @staticmethod
@@ -133,8 +132,8 @@ class TimeUtil:
         return TimeUtil.format(TimeUtil.getTimeObjNow(), timeFormat)
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：getDateStrNow")
     def getDate():
+        warn("请使用新方法：getDateStrNow", DeprecationWarning)
         return TimeUtil.getDateStrNow()
 
     @staticmethod
@@ -145,8 +144,8 @@ class TimeUtil:
         return TimeUtil.format(TimeUtil.getTimeObjNow(), timeFormat)
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：getDatetimeStrNow")
     def getNowUesFormat():
+        warn("请使用新方法：getDatetimeStrNow", DeprecationWarning)
         return TimeUtil.getTimeStrNow()
 
     @staticmethod
@@ -157,8 +156,8 @@ class TimeUtil:
         return int(round(time.time()))
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：getTimestamp")
     def getTimestampUseSecond():
+        warn("请使用新方法：getTimestamp", DeprecationWarning)
         return TimeUtil.getTimestamp()
 
     @staticmethod
@@ -176,13 +175,13 @@ class TimeUtil:
         return TimeUtil.format(TimeUtil.getTimeObjByTimestamp(timestamp), timeFormat)
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：formatTimestamp")
     def getFormatDatetimeFromTimestamp(timestamp):
+        warn("请使用新方法：formatTimestamp", DeprecationWarning)
         return TimeUtil.formatTimestamp(timestamp)
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：getTimeObjByTimeStr")
     def getTimeObjFormFormatDatetime(timeStr):
+        warn("请使用新方法：getTimeObjByTimeStr", DeprecationWarning)
         return TimeUtil.getTimeObjByTimeStr(timeStr)
 
     @staticmethod
@@ -200,8 +199,8 @@ class TimeUtil:
         return TimeUtil.getTimestampByTimeObj(TimeUtil.getTimeObjByTimeStr(timeStr, timeFormat))
 
     @staticmethod
-    @deprecated(version='2.0.0', reason="请使用新方法：getTimestampByTimeStr")
     def getTimestampFormFormatDatetime(timeStr):
+        warn("请使用新方法：getTimestampByTimeStr", DeprecationWarning)
         return TimeUtil.getTimestampByTimeStr(timeStr)
 
     @staticmethod
@@ -220,6 +219,6 @@ class TimeUtil:
         startObj = datetime.strptime(startTimeStr, timeFormat)
         endObj = datetime.strptime(endTimeStr, timeFormat)
 
-        daysDiff = (startObj - endObj).days
+        daysDiff = (endObj - startObj).days
 
         return daysDiff

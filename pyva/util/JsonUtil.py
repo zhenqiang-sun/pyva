@@ -1,7 +1,10 @@
 import datetime
 import decimal
+import re
 
 import orjson
+
+from pyva.Global import G
 
 
 class JsonUtil:
@@ -28,8 +31,53 @@ class JsonUtil:
 
     @staticmethod
     def encode(obj):
+        """
+        编码对象为JSON字符串
+        @param obj:
+        @return:
+        """
         return orjson.dumps(obj, default=JsonUtil.default).decode("utf-8")
 
     @staticmethod
     def decode(s):
+        """
+        解码JSON字符串
+        @param s:
+        @return:
+        """
         return orjson.loads(s)
+
+    @staticmethod
+    def extract(content: str):
+        """
+        从字符串中提取JSON数据并转换为字典
+        @param content:
+        @return:
+        """
+
+        # 查找第一个 '{' 的位置
+        startIndex = content.find('{')
+        # 查找最后一个 '}' 的位置
+        endIndex = content.rfind('}')
+
+        # 提取并返回结果
+        if startIndex == -1 or endIndex == -1:
+            return None
+
+        jsonStr = content[startIndex:endIndex + 1]
+
+        if jsonStr.startswith("{'"):
+            jsonStr = re.sub(r"',\n+(\s?)+'", "','", jsonStr)
+            jsonStr = jsonStr.replace('\n', '\\n')
+            return eval(jsonStr)
+
+        jsonStr = re.sub(r'{\n+(\s?)+"', '{"', jsonStr)
+        jsonStr = re.sub(r'",\n+(\s?)+"', '","', jsonStr)
+        jsonStr = re.sub(r'"\n+(\s?)+}', '"}', jsonStr)
+        jsonStr = jsonStr.replace('\n', '\\n')
+
+        try:
+            return orjson.loads(jsonStr)
+        except Exception as e:
+            G.logger.error(f"提取json数据失败: {e}")
+            return None

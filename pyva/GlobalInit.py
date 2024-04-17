@@ -5,7 +5,10 @@ from pyva.common.LoggerHandler import LoggingHandler
 
 
 def GlobalInit(AppConfig):
+    G.logger.info("GlobalInit")
+
     if G.isInitialized:
+        G.logger.info("GlobalInit-isInitialized")
         return False
 
     from pyva.util.ConfigUtil import ConfigUtil

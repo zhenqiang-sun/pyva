@@ -15,6 +15,7 @@ def initAppOnly(FastapiConfig):
 
 
 def initAppBase(FastapiConfig):
+    G.logger.info("initAppBase")
     App = initAppOnly(FastapiConfig)
     # 异常错误处理
     App.add_exception_handler(RequestValidationError, FastapiException.validationError)

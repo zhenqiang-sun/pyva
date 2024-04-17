@@ -1,13 +1,4 @@
-class MongoConfig:
-    """
-    MongoConfig MongoDB配置类
+from pyva.util.MongoUtil import MongoConfig
 
-    :version: 1.1
-    :date: 2020-02-12
-    """
-
-    host: str = "mongodb"
-    port: int = 27017
-    username = "root"
-    password: str = ""
-    database: str = ""
+if __name__ == '__main__':
+    MongoConfig

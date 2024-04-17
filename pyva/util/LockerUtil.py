@@ -1,6 +1,5 @@
 import time
-
-from deprecated import deprecated
+from warnings import warn
 
 from pyva.util.RedisUtil import RedisUtil
 
@@ -46,8 +45,8 @@ class LockerUtil:
         """
         return self.redis.getString(self.getFullKey(key))
 
-    @deprecated(version='2.0.0', reason="请使用新方法：isLocked")
     def hasLocked(self, key: str):
+        warn("请使用新方法：isLocked", DeprecationWarning)
         """
         判断是否存在锁（已废弃，请使用isLocked方法）
 

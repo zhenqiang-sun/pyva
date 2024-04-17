@@ -51,9 +51,17 @@ class FastapiException:
 
     @staticmethod
     async def report_exception(request, exc):
-        msg = f"request_method:{request.method}\n"
-        msg += f"request_url:{request.url}\n"
-        msg += f"exception:{exc}\n"
-        msg += "traceback:" + "".join(traceback.format_exception(exc))
+        # 4xx错误不上报
+        if hasattr(exc, "status_code") and str(exc.status_code).startswith("4"):
+            return
 
+        # 组装异常信息
+        msg = f"""
+request_method: {request.method}
+request_url: {request.url}
+exception: {exc}
+traceback: {''.join(traceback.format_exception(exc))}
+        """
+
+        # 上报异常
         G.logger.error(msg)

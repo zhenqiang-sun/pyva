@@ -36,8 +36,8 @@ class DbConfig:
     # 自动flush
     autoFlush: bool = False
     # 自动提交
-    autoCommit: bool = True
+    autoCommit: bool = False
     # 过期提交
-    expireOnCommit: bool = True
+    expireOnCommit: bool = False
     # 其他配置
     otherParam: dict = {}

@@ -1,0 +1,12 @@
+# 应用配置
+app:
+  name: pava-demo
+  title: pyva Demo
+  description: PyVa项目示例，基于FastAPI。
+  version: 1.0.1
+  port: 9000
+  debug: False
+  workers: 2
+  tokenExpire: 86400
+  log2dingtalk: False
+  https: False

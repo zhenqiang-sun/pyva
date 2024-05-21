@@ -21,18 +21,20 @@ class BaseDao:
         else:
             self.db = G.db
 
-    def create(self, entity):
+    def create(self, entity, commit: bool = True):
         """
         创建一条数据
-        :param entity: 数据模型实例
+        @param entity: 数据模型实例
+        @param commit:
         """
         self.db.add(entity)
-        # self.db.commit()
-        self.db.flush()
+
+        if commit:
+            self.db.commit()
 
         return entity.id
 
-    def read(self, id: int):
+    def read(self, id: int | str):
         """
         读取一条数据
         :param id: 数据id
@@ -41,22 +43,26 @@ class BaseDao:
 
         return self.db.query(self.Entity).get(id)
 
-    def update(self, entity):
+    def update(self, entity, commit: bool = True):
         """
         更新一条数据
-        :param entity: 数据模型实例
+        @param entity: 数据模型实例
+        @param commit:
         :return:
         """
 
         self.db.add(entity)
-        # self.db.commit()
-        self.db.flush()
 
-    def delete(self, entity):
+        if commit:
+            self.db.commit()
+
+    def delete(self, entity, commit: bool = True):
         """
         删除一条数据
-        :param entity: 数据模型实体
+        @param entity: 数据模型实例
+        @param commit:
         """
         self.db.delete(entity)
-        # self.db.commit()
-        self.db.flush()
+
+        if commit:
+            self.db.commit()

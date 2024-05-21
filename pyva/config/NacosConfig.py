@@ -32,6 +32,8 @@ class NacosConfig:
     serviceEnabled: bool = True
     # 配置ID
     dataId: str
+    # 配置ID组，优先级高于dataId
+    dataIdList = []
     # 心跳频率，单位秒
     heartInterval: int = 5
     clusterName = None

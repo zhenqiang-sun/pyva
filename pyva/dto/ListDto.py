@@ -38,7 +38,7 @@ class ListReqDto(BaseModel):
     size: int = 10  # 每页条数
     keywords: str = None  # 关键字，用于模糊、分词搜索
     deleted: str = None
-    userId: int = None  # 数据对应用户id
+    userId: int | str = None  # 数据对应用户id
     filters: List[ListFilterDto] = None  # 过滤条件
     orders: List[ListOrderDto] = None  # 排序条件
     keys: List[ListKeyDto] = None  # 字段条件

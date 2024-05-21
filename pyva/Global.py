@@ -2,11 +2,6 @@ import logging
 
 from sqlalchemy.orm import Session
 
-from pyva.util import MongoUtil
-from pyva.util.LockerUtil import LockerUtil
-from pyva.util.NacosUtil import NacosUtil
-from pyva.util.RedisUtil import RedisUtil
-
 
 class G:
     # 运行模式：是否Debug模式
@@ -26,12 +21,14 @@ class G:
     # 日志输出
     logger = logging.getLogger('pyva')
     # 全局nacos
-    nacos: NacosUtil = None
+    nacos = None
     # 全局db的sess
     db: Session = None
     # 全局redis
-    redis: RedisUtil = None
+    redis = None
     # 全局redis
-    mongo: MongoUtil = None
+    mongo = None
     # 全局locker
-    locker: LockerUtil = None
+    locker = None
+    # 是否初始化
+    isInitialized: bool = False

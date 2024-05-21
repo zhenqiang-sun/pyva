@@ -4,7 +4,7 @@ from decimal import Decimal
 from urllib.parse import quote_plus
 
 from humps.main import camelize
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, scoped_session, Session
 
 from pyva.Global import G
@@ -29,6 +29,7 @@ class DbUtil:
         """
         self.config = dbConfig
         self.sess = self.getSession(dbConfig)
+        self.sess.autocommit = dbConfig.autoCommit
 
     def __del__(self):
         """
@@ -82,7 +83,7 @@ class DbUtil:
         )
 
         session_factory = sessionmaker(
-            autocommit=dbConfig.autoCommit,
+            # autocommit=dbConfig.autoCommit,
             autoflush=dbConfig.autoFlush,
             bind=engine,
             expire_on_commit=dbConfig.expireOnCommit)
@@ -162,7 +163,7 @@ class DbUtil:
         :param sql:
         :return:
         """
-        row = sess.execute(sql).fetchone()
+        row = DbUtil.executeSql(sess, sql).fetchone()
         return DbUtil.rowToDict(row)
 
     @staticmethod
@@ -188,7 +189,7 @@ class DbUtil:
         :param sql:
         :return:
         """
-        rows = sess.execute(sql).fetchall()
+        rows = DbUtil.executeSql(sess, sql).fetchall()
         return DbUtil.rowsToList(rows)
 
     @staticmethod
@@ -237,8 +238,7 @@ class DbUtil:
             "\\", "\\\\").replace(
             '\"', '\\\"').replace(
             ":", "\\:").replace(
-            "%", "\\%").replace(
-            "_", "\\_")
+            "%", "\\%")
 
     @staticmethod
     def handleSqlValue(value) -> str:
@@ -350,3 +350,25 @@ class DbUtil:
 
         sql = "DELETE FROM {} WHERE {}".format(table, where)
         return sql
+
+    @staticmethod
+    def executeSql(sess: Session, sql: str):
+        """
+        执行SQL语句
+        :param sess:
+        :param sql:
+        :return:
+        """
+        return sess.execute(text(sql))
+
+    @staticmethod
+    def executeFile(sess: Session, filePath, params: dict = {}):
+        """
+        执行SQL文件
+        :param sess:
+        :param sql:
+        :return:
+        """
+        sql = DbUtil.getSql(filePath, params)
+
+        return DbUtil.executeSql(sess, sql)

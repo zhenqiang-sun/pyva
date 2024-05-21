@@ -1,8 +1,17 @@
 # IDE
 .idea
 /venv/
+.venv
 
-#build
+# build
 /build/
 /dist/
 *.egg-info/
+*.pyc
+
+# runtime
+/res/
+/src/temporary/
+*nacos-data
+*.log
+*.log.*

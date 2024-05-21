@@ -10,6 +10,8 @@ class AppConfig:
     :updatedDate: 2022-10-03
     """
 
+    # 应用ID，即服务唯一标识
+    id: str = ""
     # 应用名，即服务注册名
     name: str = "pava-demo"
     # 应用标题
@@ -28,3 +30,5 @@ class AppConfig:
     workers: int = 2
     # token有效秒数
     tokenExpire: int = 86400
+    # 访问限制Token
+    accessToken: str = ""

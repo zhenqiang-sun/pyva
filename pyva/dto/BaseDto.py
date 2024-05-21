@@ -23,7 +23,7 @@ class BaseEntityDto(BaseModel):
 
     class Config:
         json_encoders = JsonUtil.jsonEncoders
-        orm_mode = True  # 为模型实例
+        from_attributes = True  # 为模型实例
 
 
 class RespDto(BaseDto):
@@ -54,7 +54,7 @@ class RespIdDto(SuccessRespDto):
     """
     ID返回DTO
     """
-    id: int = Field(..., gt=0, description='数据ID')
+    id: int | str = Field(..., gt=0, description='数据ID')
 
 
 class RespDataDto(SuccessRespDto):

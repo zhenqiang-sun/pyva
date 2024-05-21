@@ -2,6 +2,7 @@
 PyVa = Python项目 + Java风格，这是一个工程框架库，包含DB、Redis、MongoDB、JSON等工具和基础服务类。
 
 [Github: PyVa](https://github.com/zhenqiang-sun/pyva)
+[Gitee: PyVa](https://gitee.com/qiangai/pyva)
 
 ### 依赖组件：
 

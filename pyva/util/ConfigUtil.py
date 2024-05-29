@@ -6,6 +6,7 @@ from humps.main import pascalize
 
 from pyva.Global import G
 from pyva.util.DictUtil import DictUtil
+from pyva.util.JsonUtil import JsonUtil
 from pyva.util.NacosUtil import NacosUtil
 
 
@@ -130,7 +131,7 @@ class ConfigUtil:
             serviceEnabled (bool, optional): Nacos服务是否启用，默认为True
         """
 
-        if not hasattr(applicationConfig, "nacos"):
+        if not applicationConfig.get("nacos"):
             return
 
         NacosConfig = ConfigUtil.importConfig(srcPath, "nacos")
@@ -156,6 +157,10 @@ class ConfigUtil:
         """
         applicationConfig = ConfigUtil.readApplicationConfigByYaml(AppConfig)
         ConfigUtil.readApplicationConfigByNacos(AppConfig.srcPath, applicationConfig, False)
+
+        if AppConfig.configCache:
+            ConfigUtil.saveTemporary(AppConfig, applicationConfig)
+
         ConfigUtil.updateConfig(AppConfig, applicationConfig.get("app"))
 
     @staticmethod
@@ -166,10 +171,53 @@ class ConfigUtil:
         Args:
             AppConfig (object): 应用配置对象
         """
-        applicationConfig = ConfigUtil.readApplicationConfigByYaml(AppConfig)
-        ConfigUtil.readApplicationConfigByNacos(AppConfig.srcPath, applicationConfig)
+
+        if AppConfig.configCache:
+            applicationConfig = ConfigUtil.readTemporary(AppConfig)
+        else:
+            applicationConfig = None
+
+        if not applicationConfig:
+            applicationConfig = ConfigUtil.readApplicationConfigByYaml(AppConfig)
+            ConfigUtil.readApplicationConfigByNacos(AppConfig.srcPath, applicationConfig)
 
         for key, value in applicationConfig.items():
             configClass = ConfigUtil.importConfig(AppConfig.srcPath, key)
             if configClass:
                 ConfigUtil.updateConfig(configClass, value)
+
+    @staticmethod
+    def getTemporaryFilePath(AppConfig):
+        filePath = f"{AppConfig.srcPath}{os.sep}temporary{os.sep}application-tmp.json"
+        return filePath
+
+    @staticmethod
+    def saveTemporary(AppConfig, applicationConfig):
+        filePath = ConfigUtil.getTemporaryFilePath(AppConfig)
+
+        # 打开一个文件以追加内容，如果文件不存在则创建它
+        with open(filePath, 'w') as file:
+            # 向文件中追加内容
+            file.write(JsonUtil.encode(applicationConfig))
+
+    @staticmethod
+    def readTemporary(AppConfig):
+        filePath = ConfigUtil.getTemporaryFilePath(AppConfig)
+
+        if not os.path.exists(filePath):
+            return None
+
+        with open(filePath, 'r') as file:
+            # 读取文件的全部内容
+            content = file.read()
+
+        return JsonUtil.decode(content)
+
+    @staticmethod
+    def deleteTemporary(AppConfig):
+        filePath = ConfigUtil.getTemporaryFilePath(AppConfig)
+
+        if not os.path.exists(filePath):
+            return None
+
+        os.remove(filePath)

@@ -184,3 +184,34 @@ class DingtalkYidaClient:
         else:
             logger.warning(data)
             return False
+
+    def searchInstances(self, formUuid: str, searchFieldJson: str = None, currentPage: int = None, pageSize: int = None):
+        """
+        查询表单实例数据新版S
+
+        :doc https://open-dev.dingtalk.com/apiExplorer#/?devType=org&api=yida_1.0%23SearchFormDatas
+        :param formUuid 表单UUID
+        :param searchFieldJson 根据表单内组件值查询
+        :param currentPage 分页参数，当前页。
+        :param pageSize 分页参数，每页显示条数。
+        """
+
+        url = self.apiUrlRoot + "/v1.0/yida/forms/instances/search"
+
+        body = {
+            "appType": self.appType,
+            "systemToken": self.systemToken,
+            "userId": self.userId,
+            "formUuid": formUuid,
+            "searchFieldJson": searchFieldJson,
+            "currentPage": currentPage,
+            "pageSize": pageSize,
+        }
+
+        data = self.oauth.post(url=url, json=body)
+
+        if "totalCount" in data:
+            return data
+        else:
+            logger.warning(data)
+            return None

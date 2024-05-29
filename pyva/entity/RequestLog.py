@@ -1,0 +1,40 @@
+from pyva.entity.BaseEntity import *
+from pyva.entity.HumpEntity import HumpEntity
+
+
+class RequestLog(HumpEntity):
+    """请求记录"""
+
+    id = Column(CHAR(26), primary_key=True, comment="主键")
+    createdTime = Column(DATETIME, comment="创建时间")
+    updatedTime = Column(DATETIME, comment="修改时间")
+    type = Column(TINYINT(1), comment='类型')
+    status = Column(TINYINT(1), comment='状态')
+    serviceId = Column(CHAR(26), comment="服务ID")
+    serviceName = Column(VARCHAR(50), comment="服务名")
+    userId = Column(CHAR(26), comment="用户ID")
+    requestId = Column(CHAR(26), comment="请求ID")
+    requestTimestamp = Column(BIGINT(20), comment='请求时间戳')
+    requestTime = Column(DATETIME, comment='请求时间')
+    requestIp = Column(VARCHAR(100), comment='请求IP')
+    requestLocation = Column(JSON, comment='请求位置')
+    requestPort = Column(INTEGER(11), comment='请求端口')
+    requestUrl = Column(VARCHAR(1000), comment='URL')
+    requestMethod = Column(VARCHAR(10), comment='请求方法')
+    requestScheme = Column(VARCHAR(10), comment='请求协议')
+    requestPath = Column(VARCHAR(1000), comment='请求路径')
+    requestParams = Column(JSON, comment='请求URL参数')
+    requestHeaders = Column(JSON, comment='请求Headers')
+    requestCookies = Column(JSON, comment='请求Cookies')
+    requestUseragent = Column(String(1000), comment='请求UA')
+    requestBody = Column(LONGTEXT, comment='请求正文')
+    requestJson = Column(JSON, comment='请求JSON')
+    responseTimestamp = Column(BIGINT(20), comment='响应时间戳')
+    responseTime = Column(DATETIME, comment='响应时间')
+    responseUseTime = Column(INTEGER(11), comment='使用时间')
+    responseIp = Column(VARCHAR(255), comment='响应IP')
+    responseCode = Column(INTEGER(11), comment='响应编码')
+    responseHeaders = Column(JSON, comment='响应Headers')
+    responseBody = Column(LONGTEXT, comment='响应正文')
+    responseJson = Column(JSON, comment='请求JSON')
+    responseError = Column(LONGTEXT, comment='响应错误')

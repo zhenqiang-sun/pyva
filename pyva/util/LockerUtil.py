@@ -46,19 +46,13 @@ class LockerUtil:
         return self.redis.getString(self.getFullKey(key))
 
     def hasLocked(self, key: str):
-        warn("请使用新方法：isLocked", DeprecationWarning)
         """
         判断是否存在锁（已废弃，请使用isLocked方法）
-
-        参数：
-        - key: 锁键名
-
-        返回值：
-        - 如果存在锁，返回锁的值；否则返回None
         """
+        warn("请使用新方法：isLocked", DeprecationWarning)
         return self.isLocked(key)
 
-    def lock(self, key: str, expiration=None):
+    def lock(self, key: str, expiration: int = 3600):
         """
         加锁
 

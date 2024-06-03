@@ -5,7 +5,7 @@ SQLAlchemy==2.0.30
 PyMySQL==1.1.1
 sqlacodegen==3.0.0rc5
 redis==5.1.0b5
-requests==2.32.1
+requests==2.32.3
 pyhumps==3.8.0
 nacos-sdk-python==0.1.14
 PyYAML==6.0.1

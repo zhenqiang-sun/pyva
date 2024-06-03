@@ -33,9 +33,11 @@ def initAppBase(FastapiConfig):
         )
 
     # 注册：启动事件
-    App.add_event_handler('startup', FastapiEvents.startup)
+    if FastapiConfig.addStartupEvent:
+        App.add_event_handler('startup', FastapiEvents.startup)
     # 注册：停止事件
-    App.add_event_handler('shutdown', FastapiEvents.shutdown)
+    if FastapiConfig.addShutdownEvent:
+        App.add_event_handler('shutdown', FastapiEvents.shutdown)
 
     # 注册：静态资源目录
     App.mount("/static", StaticFiles(directory=G.staticPath))

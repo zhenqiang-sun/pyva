@@ -10,7 +10,7 @@ pyhumps==3.8.0
 nacos-sdk-python==0.1.14
 PyYAML==6.0.1
 python-multipart==0.0.9
-pymongo==4.7.2
+pymongo==4.7.3
 orjson==3.10.3
 openpyxl==3.2.0b1
 deprecated==1.2.14

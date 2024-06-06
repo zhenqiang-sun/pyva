@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from pydantic import BaseModel
 
@@ -52,4 +52,4 @@ class ListPageDto(BaseModel):
     size: int = 0  # 每页大小
     count: int = 0  # 数据总条数
     pageCount: int = 0  # 总页数
-    list: List[BaseEntityDto] = None  # 数据list
+    list: List[Dict | BaseEntityDto] = None  # 数据list

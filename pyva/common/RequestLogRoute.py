@@ -56,8 +56,6 @@ class RequestLogRoute(APIRoute):
                         'message': 'Exception',
                     }
 
-                    # responseError = exc.detail
-
                     if exc.status_code == status.HTTP_401_UNAUTHORIZED:
                         responseBody["message"] = exc.detail
 
@@ -66,10 +64,10 @@ class RequestLogRoute(APIRoute):
                         'code': status.HTTP_500_INTERNAL_SERVER_ERROR,
                         'message': 'Exception',
                     }
-                    # responseError = str(exc)
 
-                responseError = self.getExceptionTracebackDetail(exc)
-                G.logger.error(f"Exception: {responseError} ")
+                if responseBody["message"] == 'Exception':
+                    responseError = self.getExceptionTracebackDetail(exc)
+                    G.logger.error(f"Exception: {responseError} ")
 
             if responseBody:
                 response = Response(status_code=responseBody.get("code"), content=JsonUtil.encode(responseBody), media_type="application/json", )

@@ -3,6 +3,8 @@ from typing import List
 
 from sqlalchemy import and_, func
 
+from pyva.common.FilterConditionEnum import FilterConditionEnum
+from pyva.common.OrderConditionEnum import OrderConditionEnum
 from pyva.dao.BaseDao import BaseDao
 from pyva.dto.ListDto import ListReqDto, ListFilterDto, ListOrderDto, ListKeyDto, ListPageDto
 from pyva.util.EntityUtil import EntityUtil
@@ -68,7 +70,7 @@ class ListDao(BaseDao):
 
         return data
 
-    def _handleListFilters(self, argsFilters: ListFilterDto):
+    def _handleListFilters(self, argsFilters: List[ListFilterDto]):
         """
         处理list接口传入的过滤条件
         :param argsFilters: 传入过滤条件
@@ -76,37 +78,42 @@ class ListDao(BaseDao):
         """
         filters = []
 
-        if argsFilters:
-            for item in argsFilters:
-                if hasattr(self.Entity, item.key):
-                    attr = getattr(self.Entity, item.key)
+        if not argsFilters:
+            return filters
 
-                    if item.condition == '=':
-                        filters.append(attr == item.value)
-                    elif item.condition == '!=':
-                        filters.append(attr != item.value)
-                    elif item.condition == '<':
-                        filters.append(attr < item.value)
-                    elif item.condition == '>':
-                        filters.append(attr > item.value)
-                    elif item.condition == '<=':
-                        filters.append(attr <= item.value)
-                    elif item.condition == '>=':
-                        filters.append(attr >= item.value)
-                    elif item.condition == 'like':
-                        filters.append(attr.like('%' + item.value + '%'))
-                    elif item.condition == 'in':
-                        filters.append(attr.in_(item.value.split(',')))
-                    elif item.condition == '!in':
-                        filters.append(~attr.in_(item.value.split(',')))
-                    elif item.condition == 'null':
-                        filters.append(attr.is_(None))
-                    elif item.condition == '!null':
-                        filters.append(~attr.isnot(None))
+        for item in argsFilters:
+            if not hasattr(self.Entity, item.key):
+                continue
+
+            attr = getattr(self.Entity, item.key)
+
+            match item.condition:
+                case FilterConditionEnum.eq.value:
+                    filters.append(attr == item.value)
+                case FilterConditionEnum.ne.value:
+                    filters.append(attr != item.value)
+                case FilterConditionEnum.lt.value:
+                    filters.append(attr < item.value)
+                case FilterConditionEnum.gt.value:
+                    filters.append(attr > item.value)
+                case FilterConditionEnum.lte.value:
+                    filters.append(attr <= item.value)
+                case FilterConditionEnum.gte.value:
+                    filters.append(attr >= item.value)
+                case FilterConditionEnum.like.value:
+                    filters.append(attr.like('%' + item.value + '%'))
+                case FilterConditionEnum.in_.value:
+                    filters.append(attr.in_(item.value.split(',')))
+                case FilterConditionEnum.not_in.value:
+                    filters.append(~attr.in_(item.value.split(',')))
+                case FilterConditionEnum.is_null.value:
+                    filters.append(attr.is_(None))
+                case FilterConditionEnum.not_null.value:
+                    filters.append(~attr.isnot(None))
 
         return filters
 
-    def _handleListOrders(self, argsOrders: ListOrderDto):
+    def _handleListOrders(self, argsOrders: List[ListOrderDto]):
         """
         处理list接口传入的排序条件
         :param argsOrders: 传入排序条件
@@ -114,21 +121,26 @@ class ListDao(BaseDao):
         """
         orders = []
 
-        if argsOrders:
-            for item in argsOrders:
-                if hasattr(self.Entity, item.key):
-                    attr = getattr(self.Entity, item.key)
+        if not argsOrders:
+            return orders
 
-                    if item.condition == 'desc':
-                        orders.append(attr.desc())
-                    elif item.condition == 'acs':
-                        orders.append(attr)
-                    elif item.condition == 'rand':  # 随机排序
-                        orders.append(func.rand())
+        for item in argsOrders:
+            if not hasattr(self.Entity, item.key):
+                continue
+
+            attr = getattr(self.Entity, item.key)
+
+            match item.condition:
+                case OrderConditionEnum.desc.value:
+                    orders.append(attr.desc())
+                case OrderConditionEnum.acs.value:
+                    orders.append(attr.asc())
+                case OrderConditionEnum.rand.value:
+                    orders.append(func.rand())
 
         return orders
 
-    def _handleListKeys(self, argsKeys: ListKeyDto, objList: List):
+    def _handleListKeys(self, argsKeys: List[ListKeyDto], objList: List):
         """
         处理list返回数据，根据传入参数keys进行过滤
         :param argsKeys: 传入过滤字段

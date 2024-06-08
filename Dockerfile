@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY requirements.txt /app/requirements.txt
 
-RUN pip install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ pyva-framework==3.3.10
+RUN pip install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ pyva-framework==3.3.11
 
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Shanghai

@@ -133,7 +133,7 @@ class ListDao(BaseDao):
             match item.condition:
                 case OrderConditionEnum.desc.value:
                     orders.append(attr.desc())
-                case OrderConditionEnum.acs.value:
+                case OrderConditionEnum.asc.value:
                     orders.append(attr.asc())
                 case OrderConditionEnum.rand.value:
                     orders.append(func.rand())

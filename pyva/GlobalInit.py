@@ -2,6 +2,7 @@ import os
 
 from pyva.Global import G
 from pyva.common.LoggerHandler import LoggingHandler
+from pyva.util.IpUtil import IpUtil
 
 
 def GlobalInit(AppConfig):
@@ -30,6 +31,8 @@ def GlobalInit(AppConfig):
     G.temporaryPath = G.path + os.sep + "temporary"
     # 静态资源路径
     G.resPath = AppConfig.rootPath + os.sep + "res"
+    # 运行IP
+    G.ip = IpUtil.getHostIp()
 
     # 配置日志处理器
     G.logger.addHandler(LoggingHandler())

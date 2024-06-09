@@ -1,18 +1,18 @@
 # pip install -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt
 fastapi==0.111.0
-uvicorn==0.29.0
+uvicorn==0.30.1
 SQLAlchemy==2.0.30
-PyMySQL==1.1.0
-sqlacodegen==2.3.0
-redis==5.0.4
-requests==2.32.1
+PyMySQL==1.1.1
+sqlacodegen==3.0.0rc5
+redis==5.1.0b5
+requests==2.32.3
 pyhumps==3.8.0
 nacos-sdk-python==0.1.14
 PyYAML==6.0.1
 python-multipart==0.0.9
-pymongo==4.7.2
+pymongo==4.7.3
 orjson==3.10.3
-openpyxl==3.1.2
+openpyxl==3.2.0b1
 deprecated==1.2.14
 jinja2==3.1.4
 typer[all]==0.12.3

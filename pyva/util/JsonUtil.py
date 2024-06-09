@@ -81,3 +81,75 @@ class JsonUtil:
         except Exception as e:
             G.logger.error(f"提取json数据失败: {e}")
             return None
+
+    @staticmethod
+    def extract(content: str):
+        """
+        从字符串中提取JSON数据并转换为字典
+        @param content:
+        @return:
+        """
+
+        if not content:
+            return None
+
+        content = content.replace('\\"', '||')
+
+        # 查找第一个 '{' 的位置
+        startIndex = content.find('{')
+        # 查找最后一个 '}' 的位置
+        endIndex = content.rfind('}')
+
+        # 提取并返回结果
+        if startIndex == -1 or endIndex == -1:
+            return None
+
+        s = content[startIndex:endIndex + 1]
+
+        if s.startswith("{'"):
+            s = re.sub(r"',\n+(\s?)+'", "','", s)
+            s = s.replace('\n', '\\n')
+            return eval(s)
+
+        try:
+            return orjson.loads(s)
+        except Exception as e:
+            pass
+
+        s = re.sub(r'{\n+(\s?)+"', '{"', s)
+
+        if not s.startswith('{"'):
+            return None
+
+        s = re.sub(r'"\n(\s?)+"(.*?)": "', r'",\n"\g<2>": "', s)
+        s = re.sub(r'”\n(\s?)+"(.*?)": "', r'",\n"\g<2>": "', s)
+        s = re.sub(r'",\n+(\s?)+"', '","', s)
+        s = re.sub(r'"\n+(\s?)+}', '"}', s)
+        s = re.sub(r'null,\n+(\s?)+"', 'null,"', s)
+        s = re.sub(r'null\n+(\s?)+}', 'null}', s)
+        s = s.replace('\n', '\\n')
+
+        try:
+            return orjson.loads(s)
+        except Exception as e:
+            G.logger.debug(f"第一次尝试提取json数据失败: {e}")
+            pass
+
+        i = 0
+        while i != -1:
+            i = s.find('"', i + 1)
+
+            if i == -1:
+                break
+
+            if (i == 1 or s[i - 2:i] == '",' or s[i - 3:i] == '": ' or s[i - 5:i] == 'null,'
+                    or s[i:i + 4] == '": "' or s[i:i + 3] == '","' or s[i:i + 2] == '"}'):
+                continue
+            else:
+                s = s[0:i] + "'" + s[i + 1:]
+
+        try:
+            return orjson.loads(s)
+        except Exception as e:
+            G.logger.error(f"提取json数据失败: {e}")
+            return None

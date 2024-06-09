@@ -10,6 +10,8 @@ class G:
     env: str = None
     # 运行目录
     path: str = None
+    # 运行IP
+    ip: str = None
     # 静态资源路径
     staticPath: str = None
     # 临时文件路径

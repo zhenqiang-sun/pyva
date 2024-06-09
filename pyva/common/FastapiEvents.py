@@ -19,8 +19,7 @@ class FastapiEvents:
             protocol = "http"
 
         info = f"""启动于：{TimeUtil.getDatetimeStrNow()}
-{FastapiConfig.name} - {FastapiConfig.title}
-{FastapiConfig.description}
+{FastapiConfig.name} - {FastapiConfig.title}，{FastapiConfig.version}
 {logoText}
 Visit Root: {protocol}://localhost:{FastapiConfig.port}
 """
@@ -32,6 +31,6 @@ Visit Root: {protocol}://localhost:{FastapiConfig.port}
     @staticmethod
     def shutdown():
         info = f"""停止于：{TimeUtil.getDatetimeStrNow()}
-{FastapiConfig.name} - {FastapiConfig.title}
+{FastapiConfig.name} - {FastapiConfig.title}，{FastapiConfig.version}
 """
         G.logger.warning(info)

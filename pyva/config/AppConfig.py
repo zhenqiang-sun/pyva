@@ -37,6 +37,8 @@ class AppConfig:
     # log输出至钉钉
     log2dingtalk: bool = False
     # 安全模式：是否启用HTTPS
-    https = False
+    https: bool = False
     # 访问限制Token
     accessToken: str = ""
+    # 配置文件缓存
+    configCache: bool = True

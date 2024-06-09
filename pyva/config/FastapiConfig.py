@@ -31,3 +31,7 @@ class FastapiConfig:
     port: int = 9000
     # 安全模式：是否启用HTTPS
     https = False
+    # 注册启动事件
+    addStartupEvent: bool = True
+    # 注册关闭事件
+    addShutdownEvent: bool = True

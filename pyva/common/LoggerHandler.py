@@ -26,11 +26,11 @@ class LoggingHandler(logging.Handler):
         log_message = self.format(record)
         title = "系统代码运行上报"
         text = f'''#### {title}
-- 环境：{AppConfig.env}
-- IP：{IpUtil.getHostIp()}
-- 服务：{AppConfig.name}
-- 调试：{AppConfig.debug}
 - 级别：{record.levelname}
+- 环境：{AppConfig.env}
+- 服务：{AppConfig.name}
+- IP：{IpUtil.getHostIp()}
+- 调试：{AppConfig.debug}
 - 时间：{TimeUtil.formatTimestamp(record.created)}
 - 线程：{record.thread}
 - 文件：{record.filename}

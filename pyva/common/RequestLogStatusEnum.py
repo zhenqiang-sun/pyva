@@ -3,7 +3,9 @@ from enum import Enum, unique
 
 @unique
 class RequestLogStatusEnum(Enum):
-    请求中 = 1
-    已返回 = 2
-    已成功 = 3
-    有异常 = 4
+    PENDING = 0  # 待处理
+    REQUESTING = 1  # 请求中
+    RETURNED = 2  # 已返回
+    SUCCESSFUL = 3  # 已成功
+    EXCEPTION = 4  # 有异常
+    FAILED = 5  # 处理失败

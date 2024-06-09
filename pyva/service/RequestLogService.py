@@ -25,8 +25,8 @@ class RequestLogService():
 
         requestLog.createdTime = TimeUtil.getNow()
         requestLog.updatedTime = requestLog.createdTime
-        requestLog.type = RequestLogTypeEnum.外部请求.value
-        requestLog.status = RequestLogStatusEnum.请求中.value
+        requestLog.type = RequestLogTypeEnum.EXTERNAL_REQUEST.value
+        requestLog.status = RequestLogStatusEnum.REQUESTING.value
         requestLog.serviceId = AppConfig.id
         requestLog.serviceName = AppConfig.name
         requestLog.requestId = requestLog.id
@@ -74,6 +74,10 @@ class RequestLogService():
 
         request.state.requestLog = requestLog
 
+        # 保存入库
+        G.db.add(requestLog)
+        G.db.commit()
+
         return requestLog
 
     @classmethod
@@ -87,7 +91,7 @@ class RequestLogService():
 
         # 补充请求日志
         requestLog.updatedTime = TimeUtil.getNow()
-        requestLog.status = RequestLogStatusEnum.已返回.value
+        requestLog.status = RequestLogStatusEnum.RETURNED.value
         requestLog.responseTimestamp = TimeUtil.getTimestampUseMillisecond()
         requestLog.responseTime = requestLog.updatedTime
         requestLog.responseUseTime = requestLog.responseTimestamp - requestLog.requestTimestamp
@@ -108,12 +112,12 @@ class RequestLogService():
 
         # 判断：responseCode
         if response.status_code >= 400:
-            requestLog.status = RequestLogStatusEnum.有异常.value
+            requestLog.status = RequestLogStatusEnum.EXCEPTION.value
 
             if hasattr(response, "error"):
                 requestLog.responseError = response.error
         else:
-            requestLog.status = RequestLogStatusEnum.已成功.value
+            requestLog.status = RequestLogStatusEnum.SUCCESSFUL.value
 
         # 保存入库
         G.db.add(requestLog)

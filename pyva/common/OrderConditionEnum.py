@@ -7,6 +7,6 @@ class OrderConditionEnum(Enum):
     排序条件枚举
     """
 
-    asc = "asc"
-    desc = "desc"
-    rand = "rand"
+    ASC = "asc"
+    DESC = "desc"
+    RAND = "rand"

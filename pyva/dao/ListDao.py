@@ -88,27 +88,27 @@ class ListDao(BaseDao):
             attr = getattr(self.Entity, item.key)
 
             match item.condition:
-                case FilterConditionEnum.eq.value:
+                case FilterConditionEnum.EQ.value:
                     filters.append(attr == item.value)
-                case FilterConditionEnum.ne.value:
+                case FilterConditionEnum.NE.value:
                     filters.append(attr != item.value)
-                case FilterConditionEnum.lt.value:
+                case FilterConditionEnum.LT.value:
                     filters.append(attr < item.value)
-                case FilterConditionEnum.gt.value:
+                case FilterConditionEnum.GT.value:
                     filters.append(attr > item.value)
-                case FilterConditionEnum.lte.value:
+                case FilterConditionEnum.LTE.value:
                     filters.append(attr <= item.value)
-                case FilterConditionEnum.gte.value:
+                case FilterConditionEnum.GTE.value:
                     filters.append(attr >= item.value)
-                case FilterConditionEnum.like.value:
+                case FilterConditionEnum.LIKE.value:
                     filters.append(attr.like('%' + item.value + '%'))
-                case FilterConditionEnum.in_.value:
+                case FilterConditionEnum.IN.value:
                     filters.append(attr.in_(item.value.split(',')))
-                case FilterConditionEnum.not_in.value:
+                case FilterConditionEnum.NOT_IN.value:
                     filters.append(~attr.in_(item.value.split(',')))
-                case FilterConditionEnum.is_null.value:
+                case FilterConditionEnum.IS_NULL.value:
                     filters.append(attr.is_(None))
-                case FilterConditionEnum.not_null.value:
+                case FilterConditionEnum.NOT_NULL.value:
                     filters.append(~attr.isnot(None))
 
         return filters
@@ -131,11 +131,11 @@ class ListDao(BaseDao):
             attr = getattr(self.Entity, item.key)
 
             match item.condition:
-                case OrderConditionEnum.desc.value:
+                case OrderConditionEnum.DESC.value:
                     orders.append(attr.desc())
-                case OrderConditionEnum.asc.value:
+                case OrderConditionEnum.ASC.value:
                     orders.append(attr.asc())
-                case OrderConditionEnum.rand.value:
+                case OrderConditionEnum.RAND.value:
                     orders.append(func.rand())
 
         return orders

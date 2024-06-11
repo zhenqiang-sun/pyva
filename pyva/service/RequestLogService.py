@@ -74,10 +74,6 @@ class RequestLogService():
 
         request.state.requestLog = requestLog
 
-        # 保存入库
-        G.db.add(requestLog)
-        G.db.commit()
-
         return requestLog
 
     @classmethod

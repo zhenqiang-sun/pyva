@@ -29,6 +29,7 @@ class LoggingHandler(logging.Handler):
 - 级别：{record.levelname}
 - 环境：{AppConfig.env}
 - 服务：{AppConfig.name}
+- 版本：{AppConfig.version}
 - IP：{IpUtil.getHostIp()}
 - 调试：{AppConfig.debug}
 - 时间：{TimeUtil.formatTimestamp(record.created)}

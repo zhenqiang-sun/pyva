@@ -41,7 +41,7 @@ class BaseDao:
         :return: 数据模型实例
         """
 
-        return self.db.query(self.Entity).get(id)
+        return self.db.get(self.Entity, id)
 
     def update(self, entity, commit: bool = True):
         """

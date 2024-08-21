@@ -146,7 +146,7 @@ class TimeUtil:
     @staticmethod
     def getNowUesFormat():
         warn("请使用新方法：getDatetimeStrNow", DeprecationWarning)
-        return TimeUtil.getTimeStrNow()
+        return TimeUtil.getDatetimeStrNow()
 
     @staticmethod
     def getTimestamp() -> int:

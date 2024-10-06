@@ -24,6 +24,9 @@ class DingtalkRobotClient:
         :return: True为通过 or False为未通过
         """
 
+        if not DingtalkRobotConfig.keywords:
+            return True
+
         contains_keyword = any(keyword in content for keyword in DingtalkRobotConfig.keywords)
 
         if not contains_keyword:
@@ -119,7 +122,7 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.sendMessage(DingtalkRobotClient.dataAddAt(data, atMobiles, atUserIds, isAtAll))
+        return DingtalkRobotClient.sendMessage(DingtalkRobotClient.dataAddAt(data, atMobiles, atUserIds, isAtAll))
 
     @staticmethod
     def sendLink(title: str, text: str, messageUrl: str, picUrl: str = None, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
@@ -145,7 +148,7 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.sendMessage(DingtalkRobotClient.dataAddAt(data, atMobiles, atUserIds, isAtAll))
+        return DingtalkRobotClient.sendMessage(DingtalkRobotClient.dataAddAt(data, atMobiles, atUserIds, isAtAll))
 
     @staticmethod
     def sendMarkdown(title: str, text: str, atMobiles: list = [], atUserIds: list = [], isAtAll: bool = False):
@@ -168,7 +171,7 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.sendMessage(DingtalkRobotClient.dataAddAt(data, atMobiles, atUserIds, isAtAll))
+        return DingtalkRobotClient.sendMessage(DingtalkRobotClient.dataAddAt(data, atMobiles, atUserIds, isAtAll))
 
     @staticmethod
     def sendWholeActionCard(title: str, text: str, singleTitle: str, singleURL: str, btnOrientation: str = None):
@@ -193,7 +196,7 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.sendMessage(data)
+        return DingtalkRobotClient.sendMessage(data)
 
     @staticmethod
     def sendBtnsActionCard(title: str, text: str, btns: list, btnOrientation: str = None):
@@ -216,7 +219,7 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.sendMessage(data)
+        return DingtalkRobotClient.sendMessage(data)
 
     @staticmethod
     def sendFeedCard(links: list):
@@ -233,4 +236,4 @@ class DingtalkRobotClient:
             },
         }
 
-        DingtalkRobotClient.sendMessage(data)
+        return DingtalkRobotClient.sendMessage(data)

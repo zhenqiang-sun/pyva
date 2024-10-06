@@ -36,6 +36,8 @@ class AppConfig:
     tokenExpire: int = 86400
     # log输出至钉钉
     log2dingtalk: bool = False
+    # log输出至飞书
+    log2feishu: bool = False
     # 安全模式：是否启用HTTPS
     https: bool = False
     # 访问限制Token

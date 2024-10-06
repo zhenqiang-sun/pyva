@@ -1,6 +1,6 @@
 # 配置文件：DingtalkRobotConfig
 
-class DingtalkRobotConfig:
+class FeishuRobotConfig:
     accessToken = ""
     keywords = []
     secret = ""

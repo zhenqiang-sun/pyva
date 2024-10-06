@@ -25,23 +25,23 @@ class LoggingHandler(logging.Handler):
         log_message = self.format(record)
 
         title = "系统代码运行上报"
-        text = f'''#### {title}
-        - 级别：{record.levelname}
-        - 环境：{AppConfig.env}
-        - 服务：{AppConfig.name}
-        - 版本：{AppConfig.version}
-        - IP：{IpUtil.getHostIp()}
-        - 调试：{AppConfig.debug}
-        - 时间：{TimeUtil.formatTimestamp(record.created)}
-        - 线程：{record.thread}
-        - 文件：{record.filename}
-        - 行号：{record.lineno}
-        - 模块：{record.module}
-        - 函数：{record.funcName}
-        - 消息：
-        ```
-        {log_message}
-        ```
+        text = f'''{title}
+- 级别：{record.levelname}
+- 环境：{AppConfig.env}
+- 服务：{AppConfig.name}
+- 版本：{AppConfig.version}
+- IP：{IpUtil.getHostIp()}
+- 调试：{AppConfig.debug}
+- 时间：{TimeUtil.formatTimestamp(record.created)}
+- 线程：{record.thread}
+- 文件：{record.filename}
+- 行号：{record.lineno}
+- 模块：{record.module}
+- 函数：{record.funcName}
+- 消息：
+```
+{log_message}
+```
         '''
 
         return title, text
